@@ -1,0 +1,22 @@
+:root {
+  --ground: #070709;
+  --ink: #f4ecea;
+  --muted: #b8a4a1;
+  --faint: #6f5856;
+  --accent: #f42c1d;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
