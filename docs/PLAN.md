@@ -14,7 +14,7 @@
 | Base de datos | PostgreSQL de Supabase |
 | API para leer y escribir tareas | PostgREST (Supabase la genera sola a partir de las tablas) vía `supabase-js` |
 | Que cada quien vea solo lo suyo | **Row Level Security (RLS)**: políticas en la BD, `user_id = auth.uid()` |
-| Login | Supabase Auth (enlace mágico por correo + Google) |
+| Login | Supabase Auth, sin contraseñas: código de un solo uso por correo + Google |
 | Reglas que no deben depender del cliente | Triggers y funciones SQL (`updated_at`, `completed_at`, crear perfil al registrarse) |
 | Lo que necesita secretos o correr solo | **Supabase Edge Functions** (TypeScript/Deno): enviar push, resumen diario, OAuth de Google Calendar, sincronía, servidor MCP |
 | Tareas programadas | `pg_cron` + `pg_net` llamando a las Edge Functions |
@@ -43,7 +43,8 @@ Si algún día hace falta un servidor de verdad (procesos largos, colas pesadas)
 | Pruebas | **Vitest** + Testing Library · **Playwright** (e2e) · **pgTAP** (RLS) | |
 | Calidad | **ESLint** (typescript-eslint estricto) + **Prettier** + **lint-staged** | |
 | CI | **GitHub Actions** | Lint, tipos, pruebas, build y migraciones en cada PR. |
-| Hospedaje del front | **Cloudflare Pages** (recomendado) o Vercel | Gratis, preview por PR, dominio propio con HTTPS. |
+| Hospedaje del front | **Cloudflare Workers** (assets estáticos) en `hitori.escudevwork.com` | Gratis: los archivos estáticos no tienen límite de peticiones; preview por PR; el dominio ya vive en Cloudflare. |
+| Correo de login | **Resend** como SMTP de Supabase, enviando desde `escudevwork.com` | El correo integrado de Supabase solo llega a miembros del equipo y manda ~2 por hora. |
 | BD | **Supabase**: local con la CLI (Docker) + un proyecto en la nube para producción | |
 
 ---
@@ -139,8 +140,8 @@ La urgencia, el cuadrante y los días de atraso **no se guardan**: dependen de �
 | Entorno | Front | BD | Cuándo se actualiza |
 |---|---|---|---|
 | Local | `npm run dev` | Supabase local (`supabase start`, Docker) | Siempre |
-| Preview | Cloudflare Pages, una URL por PR | Supabase local en CI (pruebas) | En cada PR |
-| Producción | Cloudflare Pages (`main`) + dominio | Proyecto Supabase en la nube | Al hacer merge a `main`: CI aplica migraciones (`supabase db push`) y publica el front |
+| Preview | Cloudflare Workers, una URL por PR | Supabase local en CI (pruebas) | En cada PR |
+| Producción | Cloudflare Workers (`main`) en `hitori.escudevwork.com` | Proyecto Supabase en la nube | Al hacer merge a `main`: CI aplica migraciones (`supabase db push`) y publica el front |
 
 Secretos (claves de Supabase, VAPID, OAuth de Google) en *GitHub Secrets* y en Supabase; nunca en el repo. `.env.example` documenta qué variables existen.
 
@@ -172,7 +173,7 @@ Ojo con la capa gratis de Supabase: pausa el proyecto tras ~7 días sin activida
 - `tokens.css` portado de `temas.css`; Schibsted Grotesk; `ThemeProvider` (tema + modo + «según el sistema»).
 - Componentes base en `shared/ui`: `Pill`, `Segmented`, `Chip`, `Card`, `CategoryDot`, `QuadrantGlyph`, `WipMeter`, `BrandMark`, `Switch`, `IconButton`, `Sheet`.
 - *Shell*: barra lateral en escritorio, *tab bar* en móvil (< 768 px), rutas vacías de Ahora, Tablero, Matriz, Semana, Bandeja, Ajustes.
-- Despliegue del front en Cloudflare Pages.
+- Despliegue del front en Cloudflare Workers con el subdominio `hitori.escudevwork.com`.
 **Terminado cuando:** la URL pública muestra el *shell* navegable; las capturas en templo-oscuro y templo-claro coinciden con el diseño en escritorio y móvil.
 
 #### Etapa 2 · Base de datos y seguridad
@@ -187,7 +188,9 @@ Ojo con la capa gratis de Supabase: pausa el proyecto tras ~7 días sin activida
 
 #### Etapa 3 · Autenticación y primer arranque
 **Objetivo:** entrar a Hitori con una cuenta real y quedar listo para usarla.
-- Login con enlace mágico y con Google (Supabase Auth); rutas protegidas.
+- Login sin contraseña: código de 6 dígitos por correo (`signInWithOtp` + `verifyOtp`, plantilla con `{{ .Token }}`) y Google (Supabase Auth); rutas protegidas.
+- SMTP propio con Resend (registros DNS en Cloudflare) y plantilla del correo en español con la marca de Hitori.
+- Cliente OAuth de Google con permisos básicos (`openid`, `email`, `profile`), que no requieren verificación de Google.
 - *Onboarding*: zona horaria detectada (editable), crear las primeras categorías o empezar vacío.
 - Cerrar sesión, perfil básico.
 **Terminado cuando:** en producción se crea una cuenta, se cierra sesión y se vuelve a entrar; una prueba e2e cubre el flujo.
