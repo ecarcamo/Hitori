@@ -1,17 +1,27 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { categoriesQueryOptions, isActive, type CategoryRepository } from '@/features/categories'
-import { useTaskPanel, useTasks, type TaskRepository } from '@/features/tasks'
+import {
+  inProgressWarning,
+  inProgressWarningMessage,
+  useTaskMutations,
+  useTaskPanel,
+  useTasks,
+  type TaskRepository,
+} from '@/features/tasks'
 import { useMediaQuery } from '@/shared/lib/useMediaQuery'
 import { useNow } from '@/shared/lib/useNow'
 import { EmptyState, PageHeader } from '@/shared/ui'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { buildBoard, laneAnchorId, type Board } from '../domain/boardLayout'
 import { BoardGrid } from './BoardGrid'
 import styles from './BoardPage.module.css'
 import { BoardPager } from './BoardPager'
+import type { TaskMove } from '../hooks/useBoardDrag'
 
 const MOBILE_QUERY = '(width < 768px)'
+const NOTICE_DURATION_MS = 6000
 
 interface BoardPageProps {
   tasks: TaskRepository
@@ -49,12 +59,51 @@ export function BoardPage({
   const openEdit = useTaskPanel((state) => state.openEdit)
   const openCreate = useTaskPanel((state) => state.openCreate)
   const isMobile = useMediaQuery(MOBILE_QUERY)
+  const { updateTask } = useTaskMutations(taskRepository)
+  const [notice, setNotice] = useState<string | null>(null)
   const now = useNow()
 
   const categories = (categoriesQuery.data ?? []).filter(isActive)
   const board = buildBoard(tasksQuery.data ?? [], categories, now, timezone)
   const isLoading = tasksQuery.isPending || categoriesQuery.isPending
   const hasNoCategories = categoriesQuery.isSuccess && categories.length === 0
+
+  useEffect(() => {
+    if (!notice) {
+      return
+    }
+    const timeout = setTimeout(() => {
+      setNotice(null)
+    }, NOTICE_DURATION_MS)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [notice])
+
+  const moveTask = (move: TaskMove) => {
+    const warning = inProgressWarning(
+      tasksQuery.data ?? [],
+      { id: move.taskId, categoryId: move.categoryId, nextStatus: move.status },
+      {
+        global: inProgressLimit,
+        byCategory: (categoryId) =>
+          categories.find((category) => category.id === categoryId)?.maxInProgress ?? null,
+      },
+    )
+    setNotice(warning ? inProgressWarningMessage(warning) : null)
+    updateTask.mutate({
+      id: move.taskId,
+      changes: {
+        status: move.status,
+        categoryId: move.categoryId,
+        sortOrder: move.sortOrder,
+        ...(move.categoryChanged ? { subcategoryId: null } : {}),
+      },
+    })
+    for (const neighbor of move.rebalanced) {
+      updateTask.mutate({ id: neighbor.id, changes: { sortOrder: neighbor.sortOrder } })
+    }
+  }
 
   useEffect(() => {
     if (!focusCategoryId || isLoading) {
@@ -73,6 +122,12 @@ export function BoardPage({
           {tasksQuery.error.message}
         </p>
       ) : null}
+      {createPortal(
+        <p className={styles.notice} role="status" hidden={!notice}>
+          {notice}
+        </p>,
+        document.body,
+      )}
       {hasNoCategories ? (
         <EmptyState title="Primero, tus carriles">
           Cada categoría es un carril del tablero.{' '}
@@ -90,6 +145,7 @@ export function BoardPage({
           urgencyDays={urgencyDays}
           now={now}
           onOpen={openEdit}
+          onMove={moveTask}
         />
       ) : null}
       {!isLoading && !hasNoCategories && !isMobile ? (
@@ -103,6 +159,7 @@ export function BoardPage({
           onAdd={(categoryId) => {
             openCreate({ categoryId })
           }}
+          onMove={moveTask}
         />
       ) : null}
       {board.inboxCount > 0 ? (

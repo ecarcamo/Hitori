@@ -1,7 +1,8 @@
 import type { Category } from '@/features/categories'
-import { quadrantOf, TaskCard, type Task } from '@/features/tasks'
+import { quadrantOf, type Task } from '@/features/tasks'
 import { subcategoryNameOf } from '../domain/boardLayout'
 import styles from './BoardPage.module.css'
+import { SortableTaskCard } from './SortableTaskCard'
 
 interface BoardTaskListProps {
   label: string
@@ -26,15 +27,12 @@ export function BoardTaskList({
   emptyText,
   onOpen,
 }: BoardTaskListProps) {
-  if (tasks.length === 0) {
-    return <p className={styles.empty}>{emptyText}</p>
-  }
-
   return (
     <ul className={styles.cards} aria-label={label}>
+      {tasks.length === 0 && emptyText ? <li className={styles.empty}>{emptyText}</li> : null}
       {tasks.map((task) => (
         <li key={task.id}>
-          <TaskCard
+          <SortableTaskCard
             task={task}
             quadrant={quadrantOf(task, now, category.urgencyDays ?? urgencyDays, timezone)}
             subcategoryName={subcategoryNameOf(category, task.subcategoryId)}

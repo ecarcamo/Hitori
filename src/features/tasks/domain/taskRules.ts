@@ -76,8 +76,11 @@ export interface InProgressLimits {
   byCategory: (categoryId: string) => number | null
 }
 
-export type InProgressWarning =
-  { kind: 'global'; limit: number } | { kind: 'category'; limit: number }
+export interface InProgressWarning {
+  kind: 'global' | 'category'
+  limit: number
+  count: number
+}
 
 export function inProgressWarning(
   tasks: readonly Pick<Task, 'id' | 'status' | 'categoryId'>[],
@@ -89,13 +92,13 @@ export function inProgressWarning(
   }
   const others = tasks.filter((task) => task.status === 'in_progress' && task.id !== moving.id)
   if (others.length >= limits.global) {
-    return { kind: 'global', limit: limits.global }
+    return { kind: 'global', limit: limits.global, count: others.length }
   }
   const categoryLimit = moving.categoryId ? limits.byCategory(moving.categoryId) : null
   if (categoryLimit !== null) {
     const inCategory = others.filter((task) => task.categoryId === moving.categoryId)
     if (inCategory.length >= categoryLimit) {
-      return { kind: 'category', limit: categoryLimit }
+      return { kind: 'category', limit: categoryLimit, count: inCategory.length }
     }
   }
   return null
@@ -103,5 +106,6 @@ export function inProgressWarning(
 
 export function inProgressWarningMessage(warning: InProgressWarning) {
   const scope = warning.kind === 'global' ? 'en total' : 'en esta categoría'
-  return `Ya tienes ${String(warning.limit)} en curso ${scope}. Puedes seguir, pero conviene terminar algo antes de empezar otra.`
+  const limit = warning.kind === 'global' ? 'tu límite' : 'su límite'
+  return `Ya tienes ${String(warning.count)} en curso ${scope} y ${limit} es ${String(warning.limit)}. Puedes seguir, pero conviene terminar algo antes de empezar otra.`
 }
