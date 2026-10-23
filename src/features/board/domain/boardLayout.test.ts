@@ -16,7 +16,14 @@ function category(id: string, name: string): Category {
     maxInProgress: null,
     archivedAt: null,
     subcategories: [
-      { id: `${id}-sub`, categoryId: id, name: 'Cursos', sortOrder: 'a0', archivedAt: null },
+      {
+        id: `${id}-sub`,
+        categoryId: id,
+        name: 'Cursos',
+        aliases: [],
+        sortOrder: 'a0',
+        archivedAt: null,
+      },
     ],
   }
 }
