@@ -1,0 +1,13 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+.link {
+  color: var(--ink);
+  font-weight: 600;
+}

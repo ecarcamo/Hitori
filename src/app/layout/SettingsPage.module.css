@@ -1,0 +1,22 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 480px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding: 0 18px;
+  border-radius: 16px;
+  background: var(--dim);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.item:hover {
+  background: var(--lit);
+}

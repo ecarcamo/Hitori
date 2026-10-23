@@ -21,7 +21,7 @@ export function AppShell() {
       </a>
       <Sidebar />
       <main id="contenido" className={styles.main}>
-        <Link to="/ajustes/apariencia" className={styles.mobileSettings} aria-label="Ajustes">
+        <Link to="/ajustes" className={styles.mobileSettings} aria-label="Ajustes">
           <Icon name="settings" />
         </Link>
         <m.div key={pathname} className={styles.page} {...PAGE_ENTRANCE}>
