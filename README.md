@@ -57,4 +57,10 @@ Reglas de dependencia (las revisa ESLint):
 - Sin comentarios en el código: los nombres explican.
 - Las reglas del negocio son funciones puras en `domain/`, siempre con prueba.
 - Commits con [Conventional Commits](https://www.conventionalcommits.org/): `feat(board): …`, `fix(capture): …`.
-- Una rama y un PR por etapa; `main` solo recibe PRs con la CI en verde.
+- Una rama y un PR por etapa; `main` solo recibe PRs con la CI en verde y se fusiona con squash.
+- Todo PR se asigna a @ecarcamo y lleva su label: `enhancement` (funcionalidad), `infra` (despliegue y configuración), `documentation`, `bug` o `dependencies`.
+
+## Despliegue
+
+- Producción: <https://hitori.escudevwork.com>, publicada por Cloudflare Workers en cada merge a `main`.
+- Cada PR recibe una URL de vista previa en `*-hitori.estebancarcamou.workers.dev`.
