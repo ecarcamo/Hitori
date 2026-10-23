@@ -19,6 +19,7 @@ import { WeekPage } from '@/features/week'
 import { AppShell } from './layout/AppShell'
 import { NotFoundPage } from './layout/NotFoundPage'
 import { SettingsPage } from './layout/SettingsPage'
+import { currentPathFor } from './legacyPaths'
 import { HOME_PATH } from './navigation'
 import { AccountView } from './routes/AccountView'
 import { CategoriesView } from './routes/CategoriesView'
@@ -33,13 +34,19 @@ export interface RouterContext {
 }
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: ({ location }) => {
+    const currentPath = currentPathFor(location.pathname)
+    if (currentPath) {
+      throw redirect({ href: `${currentPath}${location.searchStr}`, replace: true })
+    }
+  },
   component: Outlet,
   notFoundComponent: NotFoundPage,
 })
 
 const signInRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/entrar',
+  path: '/sign-in',
   validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
     typeof search.redirect === 'string' ? { redirect: search.redirect } : {},
   beforeLoad: async ({ context, search }) => {
@@ -56,7 +63,7 @@ const authenticatedRoute = createRoute({
   beforeLoad: async ({ context, location }) => {
     const session = await context.auth.getSession()
     if (!session) {
-      throw redirect({ to: '/entrar', search: { redirect: location.href } })
+      throw redirect({ to: '/sign-in', search: { redirect: location.href } })
     }
     const profile = await context.queryClient.query({
       ...profileQueryOptions(context.profiles, session.userId),
@@ -68,7 +75,7 @@ const authenticatedRoute = createRoute({
 
 const onboardingRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
-  path: '/bienvenida',
+  path: '/welcome',
   beforeLoad: ({ context }) => {
     if (isOnboarded(context.profile)) {
       throw redirect({ to: DEFAULT_AFTER_SIGN_IN })
@@ -82,7 +89,7 @@ const shellRoute = createRoute({
   id: 'shell',
   beforeLoad: ({ context }) => {
     if (!isOnboarded(context.profile)) {
-      throw redirect({ to: '/bienvenida' })
+      throw redirect({ to: '/welcome' })
     }
   },
   component: AppShell,
@@ -98,55 +105,55 @@ const indexRoute = createRoute({
 
 const nowRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/ahora',
+  path: '/now',
   component: NowPage,
 })
 
 const boardRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/tablero',
+  path: '/board',
   component: BoardPage,
 })
 
 const matrixRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/matriz',
+  path: '/matrix',
   component: MatrixPage,
 })
 
 const weekRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/semana',
+  path: '/week',
   component: WeekPage,
 })
 
 const inboxRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/bandeja',
+  path: '/inbox',
   component: InboxPage,
 })
 
 const settingsRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/ajustes',
+  path: '/settings',
   component: SettingsPage,
 })
 
 const accountRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/ajustes/cuenta',
+  path: '/settings/account',
   component: AccountView,
 })
 
 const categoriesRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/ajustes/categorias',
+  path: '/settings/categories',
   component: CategoriesView,
 })
 
 const appearanceRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: '/ajustes/apariencia',
+  path: '/settings/appearance',
   component: AppearancePage,
 })
 

@@ -1,7 +1,7 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { AccountPage } from '@/features/profile'
 
-const accountRoute = getRouteApi('/authenticated/shell/ajustes/cuenta')
+const accountRoute = getRouteApi('/authenticated/shell/settings/account')
 
 export function AccountView() {
   const { auth, profiles, session } = accountRoute.useRouteContext()

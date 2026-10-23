@@ -6,11 +6,11 @@ export function uniqueEmail(label: string) {
 }
 
 export async function signUpAndOnboard(page: Page, request: APIRequestContext, email: string) {
-  await page.goto('/entrar')
+  await page.goto('/sign-in')
   await page.getByLabel('Tu correo').fill(email)
   await page.getByRole('button', { name: 'Recibir código' }).click()
   await page.getByLabel('Código').fill(await readSignInCode(request, email))
-  await expect(page).toHaveURL(/\/bienvenida/)
+  await expect(page).toHaveURL(/\/welcome/)
   await page.getByLabel('¿Cómo te llamamos?').fill('Prueba')
   await page.getByRole('button', { name: 'Empezar' }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Ahora' })).toBeVisible()

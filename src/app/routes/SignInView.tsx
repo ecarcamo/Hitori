@@ -1,7 +1,7 @@
 import { getRouteApi, useRouter } from '@tanstack/react-router'
 import { safeRedirectPath, SignInPage } from '@/features/auth'
 
-const signInRoute = getRouteApi('/entrar')
+const signInRoute = getRouteApi('/sign-in')
 
 export function SignInView() {
   const { auth } = signInRoute.useRouteContext()
