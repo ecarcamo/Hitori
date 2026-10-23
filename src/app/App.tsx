@@ -1,18 +1,22 @@
-import styles from './App.module.css'
+import { RouterProvider } from '@tanstack/react-router'
+import { LazyMotion, MotionConfig, domAnimation } from 'motion/react'
+import { useState } from 'react'
+import { useDocumentAppearance } from '@/features/appearance'
+import { createAppRouter, type AppRouter } from './router'
 
-const BRAND_MARK_CELLS = 9
-const LIT_CELL_INDEX = 4
+interface AppProps {
+  router?: AppRouter
+}
 
-export function App() {
+export function App({ router: providedRouter }: AppProps) {
+  const [router] = useState(() => providedRouter ?? createAppRouter())
+  useDocumentAppearance()
+
   return (
-    <main className={styles.screen}>
-      <span className={styles.mark} aria-hidden="true">
-        {Array.from({ length: BRAND_MARK_CELLS }, (_, index) => (
-          <i key={index} className={index === LIT_CELL_INDEX ? styles.lit : undefined} />
-        ))}
-      </span>
-      <h1 className={styles.title}>Hitori</h1>
-      <p className={styles.tagline}>Tu tablero, a tu ritmo.</p>
-    </main>
+    <LazyMotion features={domAnimation} strict>
+      <MotionConfig reducedMotion="user">
+        <RouterProvider router={router} />
+      </MotionConfig>
+    </LazyMotion>
   )
 }
