@@ -1,0 +1,51 @@
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  height: 108px;
+  padding: 9px;
+  background: var(--ground);
+  color: var(--ink);
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  background: var(--lit);
+}
+
+.card i {
+  display: block;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--lit2);
+}
+
+.card i:first-child {
+  width: 70%;
+  background: var(--ink);
+}
+
+.action {
+  align-self: flex-start;
+  width: 44px;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--accent);
+}
+
+.tones {
+  display: flex;
+  gap: 4px;
+  margin-top: auto;
+}

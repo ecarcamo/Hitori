@@ -1,0 +1,20 @@
+.meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.meter i {
+  width: 18px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--lit2);
+}
+
+.meter i.used {
+  background: var(--ink);
+}
+
+.meter i.over {
+  background: var(--accent);
+}

@@ -1,0 +1,63 @@
+.matrix {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quadrant {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 260px;
+  padding: 22px;
+  border-radius: 22px;
+  background: var(--dim);
+}
+
+.lit {
+  background: var(--lit);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+}
+
+.count {
+  margin-left: auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.rule {
+  margin: -6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (width < 768px) {
+  .matrix {
+    gap: 8px;
+  }
+
+  .quadrant {
+    min-height: 180px;
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .name {
+    font-size: 17px;
+    line-height: 22px;
+  }
+}
