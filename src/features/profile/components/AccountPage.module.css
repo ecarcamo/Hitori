@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 480px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.status {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.error {
+  margin: 0;
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.signOut {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 480px;
+  padding-top: 8px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 26px;
+}
