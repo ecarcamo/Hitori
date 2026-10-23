@@ -9,6 +9,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  optimizeDeps: {
+    include: ['chrono-node/es'],
+  },
   build: {
     rolldownOptions: {
       output: {
@@ -17,6 +20,8 @@ export default defineConfig({
             { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
             { name: 'supabase', test: /node_modules[\\/]@supabase[\\/]/ },
             { name: 'tanstack', test: /node_modules[\\/]@tanstack[\\/]/ },
+            { name: 'dnd-kit', test: /node_modules[\\/]@dnd-kit[\\/]/ },
+            { name: 'dates', test: /node_modules[\\/](date-fns|@date-fns)[\\/]/ },
             {
               name: 'motion',
               test: /node_modules[\\/](motion|motion-dom|motion-utils|framer-motion)[\\/]/,
