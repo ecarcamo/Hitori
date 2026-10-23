@@ -104,7 +104,7 @@ Cada _feature_ expone una API pública por su `index.ts`; las demás _features_ 
 
 ## 4. Reglas de código
 
-1. **Identificadores en inglés**; todo texto visible en **español**.
+1. **Identificadores y URLs en inglés** (`/board`, `/settings/categories`); todo texto visible en **español**.
 2. **Sin comentarios**: el nombre de la función dice qué hace; si hace falta un comentario, se renombra o se extrae una función.
 3. Funciones cortas y con un solo propósito; componentes de menos de ~150 líneas.
 4. TypeScript estricto (`strict`, `noUncheckedIndexedAccess`), prohibido `any`.
@@ -210,6 +210,16 @@ Ojo con la capa gratis de Supabase: pausa el proyecto tras ~7 días sin activida
 - CRUD de categorías y subcategorías, tono 1–8, alias, «importante por defecto», días para urgente, límite en curso propio, archivar.
 - Reordenar con arrastre.
   **Terminado cuando:** se puede recrear U / Trabajo / Internship / Personal con sus subcategorías y el orden se conserva al recargar.
+
+#### Etapa 4b · URLs en inglés
+
+**Objetivo:** que las rutas sigan la convención universal y queden en inglés antes de que haya enlaces guardados.
+
+- `/entrar` → `/sign-in`, `/bienvenida` → `/welcome`, `/ahora` → `/now`, `/tablero` → `/board`, `/matriz` → `/matrix`, `/semana` → `/week`, `/bandeja` → `/inbox`, `/ajustes/…` → `/settings/{account,categories,appearance}`.
+- Las rutas viejas redirigen a las nuevas.
+- Pruebas unitarias y e2e actualizadas; el texto de la pantalla sigue en español.
+
+**Terminado cuando:** todas las rutas están en inglés y abrir una ruta vieja lleva a su equivalente nueva.
 
 #### Etapa 5 · Tareas y Tablero
 
