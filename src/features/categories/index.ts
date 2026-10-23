@@ -1,6 +1,6 @@
 export { CategoriesPage } from './components/CategoriesPage'
 export { CategoryNavList } from './components/CategoryNavList'
-export type { Category, Subcategory } from './domain/category'
+export { isActive, type Category, type Subcategory } from './domain/category'
 export { categoriesQueryOptions } from './hooks/categoryQueries'
 export type { CategoryRepository } from './repositories/categoryRepository'
 export { createSupabaseCategoryRepository } from './repositories/supabaseCategoryRepository'

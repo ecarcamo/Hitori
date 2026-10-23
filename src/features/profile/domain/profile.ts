@@ -5,6 +5,8 @@ export interface Profile {
   displayName: string | null
   timezone: string
   onboardedAt: string | null
+  maxInProgress: number
+  urgencyDays: number
 }
 
 export interface ProfileChanges {

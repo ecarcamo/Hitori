@@ -2,66 +2,159 @@
   overflow-x: auto;
 }
 
-.columns {
+.grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(220px, 1fr));
   column-gap: 12px;
   min-width: 940px;
 }
 
-.column {
+.columnHeader {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
-  min-height: 320px;
-  padding: 14px 14px 20px;
-  border-radius: 18px;
+  margin: 0;
+  padding: 14px 14px 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.count {
+  color: var(--muted);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.columnHeader > [role='img'] {
+  margin-left: auto;
+}
+
+.litTop {
+  border-radius: 18px 18px 0 0;
+  background: var(--lit);
 }
 
 .lit {
   background: var(--lit);
 }
 
-.columnTitle {
+.litBottom {
+  border-radius: 0 0 18px 18px;
+}
+
+.laneHeader {
+  scroll-margin-top: 24px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
-  font-size: 16px;
+  padding: 18px 14px 10px;
+  font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
-.columnTitle > span:last-child {
-  color: var(--muted);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
+.laneGap {
+  min-height: 20px;
 }
 
-.columnTitle > [role='img'] {
+.addButton {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
   margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+}
+
+.addButton:hover {
+  background: var(--lit);
+  color: var(--ink);
+}
+
+.addButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cell {
+  padding: 0 0 6px;
+}
+
+.cell.lit {
+  padding: 0 8px 6px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .empty {
   margin: 0;
+  padding: 10px 14px;
   color: var(--muted);
   font-size: 14px;
 }
 
-@media (width < 768px) {
-  .board {
-    margin-right: -16px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
+.pager {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-  .columns {
-    grid-template-columns: repeat(4, 82vw);
-    min-width: 0;
-    padding-right: 16px;
-  }
+.pager [role='radiogroup'] button {
+  font-size: 12px;
+}
 
-  .column {
-    min-height: 240px;
-    scroll-snap-align: start;
-  }
+.pagerWip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--lit);
+  font-weight: 600;
+}
+
+.pagerLane {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pagerLane .laneHeader {
+  scroll-margin-top: 24px;
+  padding: 8px 4px 2px;
+}
+
+.inboxNote {
+  margin: 0 4px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.link {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.hot {
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.error {
+  margin: 0;
+  color: var(--accent-text);
+  font-weight: 600;
 }

@@ -12,7 +12,7 @@ import type {
   NewSubcategory,
   SubcategoryChanges,
 } from '../domain/category'
-import { bySortOrder } from '../domain/sortOrder'
+import { bySortOrder } from '@/shared/lib/sortOrder'
 import type { CategoryRepository } from '../repositories/categoryRepository'
 
 const CATEGORIES_KEY = ['categories'] as const

@@ -9,9 +9,8 @@ import {
 } from '@tanstack/react-router'
 import { AppearancePage } from '@/features/appearance'
 import { DEFAULT_AFTER_SIGN_IN, safeRedirectPath, type AuthRepository } from '@/features/auth'
-import { BoardPage } from '@/features/board'
 import type { CategoryRepository } from '@/features/categories'
-import { InboxPage } from '@/features/inbox'
+import type { TaskRepository } from '@/features/tasks'
 import { MatrixPage } from '@/features/matrix'
 import { NowPage } from '@/features/now'
 import { isOnboarded, profileQueryOptions, type ProfileRepository } from '@/features/profile'
@@ -22,7 +21,9 @@ import { SettingsPage } from './layout/SettingsPage'
 import { currentPathFor } from './legacyPaths'
 import { HOME_PATH } from './navigation'
 import { AccountView } from './routes/AccountView'
+import { BoardView } from './routes/BoardView'
 import { CategoriesView } from './routes/CategoriesView'
+import { InboxView } from './routes/InboxView'
 import { OnboardingView } from './routes/OnboardingView'
 import { SignInView } from './routes/SignInView'
 
@@ -31,6 +32,7 @@ export interface RouterContext {
   auth: AuthRepository
   profiles: ProfileRepository
   categories: CategoryRepository
+  tasks: TaskRepository
 }
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
@@ -112,7 +114,9 @@ const nowRoute = createRoute({
 const boardRoute = createRoute({
   getParentRoute: () => shellRoute,
   path: '/board',
-  component: BoardPage,
+  validateSearch: (search: Record<string, unknown>): { category?: string } =>
+    typeof search.category === 'string' ? { category: search.category } : {},
+  component: BoardView,
 })
 
 const matrixRoute = createRoute({
@@ -130,7 +134,7 @@ const weekRoute = createRoute({
 const inboxRoute = createRoute({
   getParentRoute: () => shellRoute,
   path: '/inbox',
-  component: InboxPage,
+  component: InboxView,
 })
 
 const settingsRoute = createRoute({

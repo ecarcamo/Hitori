@@ -1,7 +1,7 @@
 import { Chip, ChipInput } from '@/shared/ui'
 import { CATEGORY_NAME_MAX_LENGTH, isActive, type Category } from '../domain/category'
 import { normalizeName, validateName } from '../domain/categoryRules'
-import { sortOrderAfter } from '../domain/sortOrder'
+import { sortOrderAfter } from '@/shared/lib/sortOrder'
 import type { CategoryMutations } from '../hooks/categoryQueries'
 import styles from './CategoriesPage.module.css'
 

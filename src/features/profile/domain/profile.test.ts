@@ -16,7 +16,7 @@ describe('normalizeDisplayName', () => {
 
 describe('isOnboarded', () => {
   it('depends on the onboarding date', () => {
-    const base = { id: 'u1', displayName: null, timezone: 'UTC' }
+    const base = { id: 'u1', displayName: null, timezone: 'UTC', maxInProgress: 3, urgencyDays: 3 }
     expect(isOnboarded({ ...base, onboardedAt: null })).toBe(false)
     expect(isOnboarded({ ...base, onboardedAt: '2026-10-22T18:00:00Z' })).toBe(true)
   })

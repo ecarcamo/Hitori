@@ -1,38 +1,120 @@
-import { PageHeader, WipMeter } from '@/shared/ui'
-import { cx } from '@/shared/lib/cx'
+import { useQuery } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
+import { categoriesQueryOptions, isActive, type CategoryRepository } from '@/features/categories'
+import { useTaskPanel, useTasks, type TaskRepository } from '@/features/tasks'
+import { useMediaQuery } from '@/shared/lib/useMediaQuery'
+import { useNow } from '@/shared/lib/useNow'
+import { EmptyState, PageHeader } from '@/shared/ui'
+import { useEffect } from 'react'
+import { buildBoard, laneAnchorId, type Board } from '../domain/boardLayout'
+import { BoardGrid } from './BoardGrid'
 import styles from './BoardPage.module.css'
+import { BoardPager } from './BoardPager'
 
-const DEFAULT_WIP_LIMIT = 3
+const MOBILE_QUERY = '(width < 768px)'
 
-const COLUMNS = [
-  { id: 'todo', title: 'Por hacer', isLit: false },
-  { id: 'in_progress', title: 'En curso', isLit: true },
-  { id: 'waiting', title: 'Esperando', isLit: false },
-  { id: 'done', title: 'Hecho', isLit: false },
-] as const
+interface BoardPageProps {
+  tasks: TaskRepository
+  categories: CategoryRepository
+  timezone: string
+  inProgressLimit: number
+  urgencyDays: number
+  focusCategoryId: string | null
+}
 
-export function BoardPage() {
+function boardSummary(board: Board) {
+  const active =
+    board.activeCount === 1 ? '1 tarea activa' : `${String(board.activeCount)} tareas activas`
+  if (board.overdueCount === 0) {
+    return <>{active}. Lo que tienes en curso es lo único encendido.</>
+  }
+  const late = board.overdueCount === 1 ? '1 atrasada' : `${String(board.overdueCount)} atrasadas`
   return (
     <>
-      <PageHeader
-        title="Tablero"
-        description="Tus tareas por categoría y estado. Lo que tienes en curso es lo único encendido."
-      />
-      <section className={styles.board} aria-label="Tablero por categoría">
-        <div className={styles.columns}>
-          {COLUMNS.map((column) => (
-            <div key={column.id} className={cx(styles.column, column.isLit && styles.lit)}>
-              <h2 className={styles.columnTitle}>
-                {column.title}
-                {column.isLit ? <WipMeter used={0} limit={DEFAULT_WIP_LIMIT} /> : <span>0</span>}
-              </h2>
-              <p className={styles.empty}>
-                {column.isLit ? 'Tienes 3 espacios libres' : 'Sin tareas'}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {active} y <b className={styles.hot}>{late}</b>. Lo que tienes en curso es lo único encendido.
+    </>
+  )
+}
+
+export function BoardPage({
+  tasks: taskRepository,
+  categories: categoryRepository,
+  timezone,
+  inProgressLimit,
+  urgencyDays,
+  focusCategoryId,
+}: BoardPageProps) {
+  const tasksQuery = useTasks(taskRepository)
+  const categoriesQuery = useQuery(categoriesQueryOptions(categoryRepository))
+  const openEdit = useTaskPanel((state) => state.openEdit)
+  const openCreate = useTaskPanel((state) => state.openCreate)
+  const isMobile = useMediaQuery(MOBILE_QUERY)
+  const now = useNow()
+
+  const categories = (categoriesQuery.data ?? []).filter(isActive)
+  const board = buildBoard(tasksQuery.data ?? [], categories, now, timezone)
+  const isLoading = tasksQuery.isPending || categoriesQuery.isPending
+  const hasNoCategories = categoriesQuery.isSuccess && categories.length === 0
+
+  useEffect(() => {
+    if (!focusCategoryId || isLoading) {
+      return
+    }
+    document
+      .getElementById(laneAnchorId(focusCategoryId))
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [focusCategoryId, isLoading])
+
+  return (
+    <>
+      <PageHeader title="Tablero" description={isLoading ? undefined : boardSummary(board)} />
+      {tasksQuery.error ? (
+        <p className={styles.error} role="alert">
+          {tasksQuery.error.message}
+        </p>
+      ) : null}
+      {hasNoCategories ? (
+        <EmptyState title="Primero, tus carriles">
+          Cada categoría es un carril del tablero.{' '}
+          <Link to="/settings/categories" className={styles.link}>
+            Crea tus categorías
+          </Link>{' '}
+          y vuelve aquí.
+        </EmptyState>
+      ) : null}
+      {!isLoading && !hasNoCategories && isMobile ? (
+        <BoardPager
+          board={board}
+          inProgressLimit={inProgressLimit}
+          timezone={timezone}
+          urgencyDays={urgencyDays}
+          now={now}
+          onOpen={openEdit}
+        />
+      ) : null}
+      {!isLoading && !hasNoCategories && !isMobile ? (
+        <BoardGrid
+          board={board}
+          inProgressLimit={inProgressLimit}
+          timezone={timezone}
+          urgencyDays={urgencyDays}
+          now={now}
+          onOpen={openEdit}
+          onAdd={(categoryId) => {
+            openCreate({ categoryId })
+          }}
+        />
+      ) : null}
+      {board.inboxCount > 0 ? (
+        <p className={styles.inboxNote}>
+          {board.inboxCount === 1 ? 'Hay 1 tarea' : `Hay ${String(board.inboxCount)} tareas`} sin
+          categoría en la{' '}
+          <Link to="/inbox" className={styles.link}>
+            Bandeja
+          </Link>
+          .
+        </p>
+      ) : null}
     </>
   )
 }

@@ -2,6 +2,7 @@ import { vi } from 'vitest'
 import type { AuthRepository, AuthSession } from '@/features/auth'
 import type { Category, CategoryRepository, Subcategory } from '@/features/categories'
 import type { Profile, ProfileRepository } from '@/features/profile'
+import type { Task, TaskRepository } from '@/features/tasks'
 
 export const TEST_SESSION: AuthSession = { userId: 'user-1', email: 'ana@hitori.test' }
 
@@ -10,6 +11,8 @@ export const ONBOARDED_PROFILE: Profile = {
   displayName: 'Ana',
   timezone: 'America/Guatemala',
   onboardedAt: '2026-10-22T18:00:00Z',
+  maxInProgress: 3,
+  urgencyDays: 3,
 }
 
 export function createFakeAuthRepository(session: AuthSession | null = TEST_SESSION) {
@@ -105,6 +108,75 @@ export function createFakeCategoryRepository(initial: Category[] = []) {
       return Promise.resolve()
     }),
   } satisfies CategoryRepository
+
+  return repository
+}
+
+export function createFakeTaskRepository(initial: Task[] = []) {
+  let tasks = structuredClone(initial)
+  let sequence = 0
+  const nextId = (prefix: string) => {
+    sequence += 1
+    return `${prefix}-${String(sequence)}`
+  }
+  const withTask = (id: string, update: (task: Task) => Task) => {
+    tasks = tasks.map((task) => (task.id === id ? update(task) : task))
+  }
+
+  const repository = {
+    listTasks: vi.fn(() => Promise.resolve(structuredClone(tasks))),
+    createTask: vi.fn((input: Parameters<TaskRepository['createTask']>[0]) => {
+      const task: Task = {
+        ...input,
+        id: nextId('task'),
+        completedAt: input.status === 'done' ? new Date().toISOString() : null,
+        createdAt: new Date().toISOString(),
+        checklist: [],
+      }
+      tasks = [...tasks, task]
+      return Promise.resolve(structuredClone(task))
+    }),
+    updateTask: vi.fn((id: string, changes: Parameters<TaskRepository['updateTask']>[1]) => {
+      withTask(id, (task) => ({
+        ...task,
+        ...changes,
+        completedAt:
+          changes.status === undefined
+            ? task.completedAt
+            : changes.status === 'done'
+              ? (task.completedAt ?? new Date().toISOString())
+              : null,
+      }))
+      return Promise.resolve()
+    }),
+    deleteTask: vi.fn((id: string) => {
+      tasks = tasks.filter((task) => task.id !== id)
+      return Promise.resolve()
+    }),
+    addChecklistItem: vi.fn((input: Parameters<TaskRepository['addChecklistItem']>[0]) => {
+      const item = { id: nextId('item'), isDone: false, ...input }
+      withTask(input.taskId, (task) => ({ ...task, checklist: [...task.checklist, item] }))
+      return Promise.resolve(structuredClone(item))
+    }),
+    updateChecklistItem: vi.fn(
+      (id: string, changes: Parameters<TaskRepository['updateChecklistItem']>[1]) => {
+        tasks = tasks.map((task) => ({
+          ...task,
+          checklist: task.checklist.map((item) =>
+            item.id === id ? { ...item, ...changes } : item,
+          ),
+        }))
+        return Promise.resolve()
+      },
+    ),
+    deleteChecklistItem: vi.fn((id: string) => {
+      tasks = tasks.map((task) => ({
+        ...task,
+        checklist: task.checklist.filter((item) => item.id !== id),
+      }))
+      return Promise.resolve()
+    }),
+  } satisfies TaskRepository
 
   return repository
 }

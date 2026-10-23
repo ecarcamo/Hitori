@@ -1,16 +1,17 @@
-import { useDisclosure } from '@/shared/lib/useDisclosure'
+import { useTaskPanel } from '@/features/tasks'
 import { Button } from '@/shared/ui'
-import { NewTaskComingSoon } from './NewTaskComingSoon'
 
 export function NewTaskButton() {
-  const comingSoon = useDisclosure()
+  const openCreate = useTaskPanel((state) => state.openCreate)
 
   return (
-    <>
-      <Button variant="accent" onClick={comingSoon.open}>
-        Nueva tarea
-      </Button>
-      <NewTaskComingSoon open={comingSoon.isOpen} onClose={comingSoon.close} />
-    </>
+    <Button
+      variant="accent"
+      onClick={() => {
+        openCreate()
+      }}
+    >
+      Nueva tarea
+    </Button>
   )
 }

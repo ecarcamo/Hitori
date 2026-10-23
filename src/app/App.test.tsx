@@ -6,6 +6,7 @@ import type { Profile } from '@/features/profile'
 import {
   createFakeAuthRepository,
   createFakeCategoryRepository,
+  createFakeTaskRepository,
   createFakeProfileRepository,
   ONBOARDED_PROFILE,
   TEST_SESSION,
@@ -25,7 +26,8 @@ function renderAt(
   const auth = createFakeAuthRepository(session)
   const profiles = createFakeProfileRepository(profile)
   const categories = createFakeCategoryRepository()
-  render(<App dependencies={{ auth, profiles, categories }} history={history} />)
+  const tasks = createFakeTaskRepository()
+  render(<App dependencies={{ auth, profiles, categories, tasks }} history={history} />)
   return { history, auth, profiles }
 }
 
@@ -81,7 +83,7 @@ describe('App', () => {
     expect(history.location.pathname).toBe('/sign-in')
   })
 
-  it('tells that creating tasks is coming soon', async () => {
+  it('opens the new task form from anywhere', async () => {
     const user = userEvent.setup()
     renderAt('/now')
 
@@ -91,7 +93,7 @@ describe('App', () => {
     }
     await user.click(newTaskButton)
 
-    expect(screen.getByRole('dialog', { name: 'Crear tareas llega pronto' })).toBeInTheDocument()
+    expect(screen.getByRole('dialog', { name: 'Nueva tarea' })).toBeInTheDocument()
   })
 
   it('applies the theme and mode to the document', async () => {

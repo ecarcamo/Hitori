@@ -1,0 +1,83 @@
+.panel {
+  width: min(520px, 100vw);
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: var(--dim);
+  color: var(--ink);
+}
+
+.panel[open] {
+  animation: slide-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.panel::backdrop {
+  background: var(--scrim);
+}
+
+.panel[open]::backdrop {
+  animation: fade 0.2s ease-out;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 100%;
+  padding: 20px 24px calc(28px + env(safe-area-inset-bottom));
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.015em;
+}
+
+.header button {
+  background: var(--lit);
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (width < 768px) {
+  .content {
+    padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel[open],
+  .panel[open]::backdrop {
+    animation: none;
+  }
+}
