@@ -82,7 +82,7 @@ minimum_password_length = 6
 password_requirements = ""
 
 [auth.rate_limit]
-email_sent = 2
+email_sent = 200
 sms_sent = 30
 anonymous_users = 30
 token_refresh = 150
@@ -98,6 +98,14 @@ secure_password_change = false
 max_frequency = "1s"
 otp_length = 6
 otp_expiry = 600
+
+[auth.email.template.confirmation]
+subject = "Tu código para entrar a Hitori"
+content_path = "./supabase/templates/sign-in-code.html"
+
+[auth.email.template.magic_link]
+subject = "Tu código para entrar a Hitori"
+content_path = "./supabase/templates/sign-in-code.html"
 
 [auth.sms]
 enable_signup = false

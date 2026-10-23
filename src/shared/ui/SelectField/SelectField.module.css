@@ -1,0 +1,27 @@
+.wrapper {
+  position: relative;
+  display: block;
+}
+
+.wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  pointer-events: none;
+  transform: translateY(-70%) rotate(45deg);
+}
+
+.select {
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.select option {
+  background: var(--dim);
+  color: var(--ink);
+}

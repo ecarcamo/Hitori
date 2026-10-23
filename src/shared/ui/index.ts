@@ -11,3 +11,6 @@ export { SegmentedControl, type SegmentedOption } from './SegmentedControl/Segme
 export { Switch } from './Switch/Switch'
 export { WipMeter } from './WipMeter/WipMeter'
 export { useRovingRadioGroup } from './RadioGroup/useRovingRadioGroup'
+export { Divider } from './Divider/Divider'
+export { SelectField, type SelectOption } from './SelectField/SelectField'
+export { TextField } from './TextField/TextField'

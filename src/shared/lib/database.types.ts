@@ -109,6 +109,7 @@ export type Database = {
           id: string
           locale: string
           max_in_progress: number
+          onboarded_at: string | null
           theme: string
           timezone: string
           updated_at: string
@@ -124,6 +125,7 @@ export type Database = {
           id: string
           locale?: string
           max_in_progress?: number
+          onboarded_at?: string | null
           theme?: string
           timezone?: string
           updated_at?: string
@@ -138,6 +140,7 @@ export type Database = {
           id?: string
           locale?: string
           max_in_progress?: number
+          onboarded_at?: string | null
           theme?: string
           timezone?: string
           updated_at?: string

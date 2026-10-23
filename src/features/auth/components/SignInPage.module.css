@@ -1,0 +1,77 @@
+.screen {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 24px 16px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.title {
+  margin: 4px 0 0;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.tagline {
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.lead b {
+  color: var(--ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.codeInput {
+  font-size: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+
+.secondaryActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.error {
+  margin: 0;
+  color: var(--accent-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}

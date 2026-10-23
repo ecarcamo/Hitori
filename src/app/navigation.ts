@@ -7,6 +7,7 @@ export const PRIMARY_VIEWS = [
 ] as const
 
 export const SETTINGS_VIEWS = [
+  { to: '/ajustes/cuenta', label: 'Cuenta' },
   { to: '/ajustes/categorias', label: 'Categorías' },
   { to: '/ajustes/apariencia', label: 'Apariencia' },
 ] as const

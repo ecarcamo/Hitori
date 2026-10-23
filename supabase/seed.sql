@@ -42,7 +42,7 @@ values (
 );
 
 update public.profiles
-set timezone = 'America/Guatemala'
+set timezone = 'America/Guatemala', onboarded_at = now()
 where id = '00000000-0000-4000-8000-000000000001';
 
 insert into public.categories (id, user_id, name, color_slot, aliases, sort_order, important_by_default)

@@ -7,6 +7,7 @@ Web para la compu y PWA para el teléfono. Carriles por categoría, límite de t
 - Plan de construcción: [`docs/PLAN.md`](docs/PLAN.md)
 - Decisiones de arquitectura: [`docs/adr/`](docs/adr)
 - Base de datos: [`docs/database.md`](docs/database.md)
+- Inicio de sesión: [`docs/auth.md`](docs/auth.md)
 
 ## Requisitos
 
@@ -17,10 +18,13 @@ Web para la compu y PWA para el teléfono. Carriles por categoría, límite de t
 
 ```bash
 npm install
-cp .env.example .env.local
-npm run db:start
+npx supabase start
 npm run dev
 ```
+
+`.env.development` apunta al Supabase local y `.env.production` al de producción; las dos claves son públicas por diseño. Para cambiar algo solo en tu máquina, usa `.env.development.local`.
+
+El buzón de prueba local, donde llegan los códigos para entrar, está en <http://127.0.0.1:55324>.
 
 ## Comandos
 
@@ -33,6 +37,7 @@ npm run dev
 | `npm run format`    | Formatea con Prettier                         |
 | `npm run test`      | Pruebas con Vitest                            |
 | `npm run check`     | Todo lo anterior, igual que la CI             |
+| `npm run test:e2e`  | Pruebas de punta a punta con Playwright       |
 | `npm run db:start`  | Levanta la base de datos local                |
 | `npm run db:test`   | Pruebas de la base de datos (pgTAP)           |
 | `npm run db:types`  | Regenera los tipos de la base de datos        |

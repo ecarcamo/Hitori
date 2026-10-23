@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Tu código para entrar a Hitori</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background: #070709;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #f4ecea;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background: #070709"
+    >
+      <tr>
+        <td align="center" style="padding: 40px 16px">
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 440px; background: #191314; border-radius: 20px"
+          >
+            <tr>
+              <td style="padding: 32px 28px 8px">
+                <table role="presentation" cellpadding="0" cellspacing="2">
+                  <tr>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                  </tr>
+                  <tr>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                    <td width="8" height="8" style="background: #f42c1d; border-radius: 1px"></td>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                  </tr>
+                  <tr>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                    <td width="8" height="8" style="background: #6f5856; border-radius: 1px"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 16px 28px 0">
+                <h1
+                  style="
+                    margin: 0;
+                    font-size: 28px;
+                    line-height: 32px;
+                    font-weight: 700;
+                    letter-spacing: -0.02em;
+                  "
+                >
+                  Tu código para entrar
+                </h1>
+                <p style="margin: 12px 0 0; font-size: 16px; line-height: 24px; color: #b8a4a1">
+                  Escríbelo en Hitori para entrar. Vence en 10 minutos.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 24px 28px">
+                <div
+                  style="
+                    background: #2a1c1d;
+                    border-radius: 16px;
+                    padding: 20px;
+                    text-align: center;
+                    font-size: 36px;
+                    line-height: 40px;
+                    font-weight: 700;
+                    letter-spacing: 0.3em;
+                    color: #f4ecea;
+                  "
+                >
+                  {{ .Token }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 0 28px 32px">
+                <p style="margin: 0; font-size: 14px; line-height: 20px; color: #b8a4a1">
+                  Si no pediste este código, ignora este correo: nadie puede entrar sin él.
+                </p>
+              </td>
+            </tr>
+          </table>
+          <p style="margin: 20px 0 0; font-size: 13px; color: #6f5856">
+            Hitori · Tu tablero, a tu ritmo.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,25 +1,93 @@
+import type { QueryClient } from '@tanstack/react-query'
 import {
-  createRootRoute,
+  createRootRouteWithContext,
   createRoute,
   createRouter,
+  Outlet,
   redirect,
   type RouterHistory,
 } from '@tanstack/react-router'
 import { AppearancePage } from '@/features/appearance'
+import { DEFAULT_AFTER_SIGN_IN, safeRedirectPath, type AuthRepository } from '@/features/auth'
 import { BoardPage } from '@/features/board'
 import { CategoriesPage } from '@/features/categories'
 import { InboxPage } from '@/features/inbox'
 import { MatrixPage } from '@/features/matrix'
 import { NowPage } from '@/features/now'
+import { isOnboarded, profileQueryOptions, type ProfileRepository } from '@/features/profile'
 import { WeekPage } from '@/features/week'
 import { AppShell } from './layout/AppShell'
 import { NotFoundPage } from './layout/NotFoundPage'
+import { SettingsPage } from './layout/SettingsPage'
 import { HOME_PATH } from './navigation'
+import { AccountView } from './routes/AccountView'
+import { OnboardingView } from './routes/OnboardingView'
+import { SignInView } from './routes/SignInView'
 
-const rootRoute = createRootRoute({ component: AppShell, notFoundComponent: NotFoundPage })
+export interface RouterContext {
+  queryClient: QueryClient
+  auth: AuthRepository
+  profiles: ProfileRepository
+}
+
+const rootRoute = createRootRouteWithContext<RouterContext>()({
+  component: Outlet,
+  notFoundComponent: NotFoundPage,
+})
+
+const signInRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/entrar',
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
+    typeof search.redirect === 'string' ? { redirect: search.redirect } : {},
+  beforeLoad: async ({ context, search }) => {
+    if (await context.auth.getSession()) {
+      throw redirect({ href: safeRedirectPath(search.redirect) })
+    }
+  },
+  component: SignInView,
+})
+
+const authenticatedRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: 'authenticated',
+  beforeLoad: async ({ context, location }) => {
+    const session = await context.auth.getSession()
+    if (!session) {
+      throw redirect({ to: '/entrar', search: { redirect: location.href } })
+    }
+    const profile = await context.queryClient.query({
+      ...profileQueryOptions(context.profiles, session.userId),
+      staleTime: 'static',
+    })
+    return { session, profile }
+  },
+})
+
+const onboardingRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/bienvenida',
+  beforeLoad: ({ context }) => {
+    if (isOnboarded(context.profile)) {
+      throw redirect({ to: DEFAULT_AFTER_SIGN_IN })
+    }
+  },
+  component: OnboardingView,
+})
+
+const shellRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  id: 'shell',
+  beforeLoad: ({ context }) => {
+    if (!isOnboarded(context.profile)) {
+      throw redirect({ to: '/bienvenida' })
+    }
+  },
+  component: AppShell,
+})
 
 const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/',
   beforeLoad: () => {
     throw redirect({ to: HOME_PATH })
@@ -27,61 +95,87 @@ const indexRoute = createRoute({
 })
 
 const nowRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/ahora',
   component: NowPage,
 })
 
 const boardRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/tablero',
   component: BoardPage,
 })
 
 const matrixRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/matriz',
   component: MatrixPage,
 })
 
 const weekRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/semana',
   component: WeekPage,
 })
 
 const inboxRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/bandeja',
   component: InboxPage,
 })
 
+const settingsRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/ajustes',
+  component: SettingsPage,
+})
+
+const accountRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/ajustes/cuenta',
+  component: AccountView,
+})
+
 const categoriesRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/ajustes/categorias',
   component: CategoriesPage,
 })
 
 const appearanceRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/ajustes/apariencia',
   component: AppearancePage,
 })
 
 const routeTree = rootRoute.addChildren([
-  indexRoute,
-  nowRoute,
-  boardRoute,
-  matrixRoute,
-  weekRoute,
-  inboxRoute,
-  categoriesRoute,
-  appearanceRoute,
+  signInRoute,
+  authenticatedRoute.addChildren([
+    onboardingRoute,
+    shellRoute.addChildren([
+      indexRoute,
+      nowRoute,
+      boardRoute,
+      matrixRoute,
+      weekRoute,
+      inboxRoute,
+      settingsRoute,
+      accountRoute,
+      categoriesRoute,
+      appearanceRoute,
+    ]),
+  ]),
 ])
 
-export function createAppRouter(history?: RouterHistory) {
+interface AppRouterOptions {
+  context: RouterContext
+  history?: RouterHistory | undefined
+}
+
+export function createAppRouter({ context, history }: AppRouterOptions) {
   return createRouter({
     routeTree,
+    context,
     defaultPreload: 'intent',
     ...(history ? { history } : {}),
   })

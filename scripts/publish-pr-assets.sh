@@ -30,7 +30,8 @@ done
 
 git -C "$worktree" add "$folder"
 git -C "$worktree" -c core.hooksPath=/dev/null commit -q -m "chore: add PR assets for $folder"
-git -C "$worktree" push -q origin "HEAD:refs/heads/$assets_branch"
+git -C "$worktree" push -q origin "HEAD:refs/heads/$assets_branch" 2>/dev/null
+git -C "$repo_root" worktree remove --force "$worktree"
 git -C "$repo_root" branch -q -D "$assets_branch-new" >/dev/null 2>&1 || true
 
 for file in "$@"; do

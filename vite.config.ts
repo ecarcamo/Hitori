@@ -9,6 +9,23 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        advancedChunks: {
+          groups: [
+            { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
+            { name: 'supabase', test: /node_modules[\\/]@supabase[\\/]/ },
+            { name: 'tanstack', test: /node_modules[\\/]@tanstack[\\/]/ },
+            {
+              name: 'motion',
+              test: /node_modules[\\/](motion|motion-dom|motion-utils|framer-motion)[\\/]/,
+            },
+          ],
+        },
+      },
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
