@@ -4,4 +4,6 @@
 
 ## Cómo probarlo
 
-## Capturas
+## Evidencia
+
+## Terminado cuando
