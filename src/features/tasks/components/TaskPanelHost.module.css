@@ -1,0 +1,21 @@
+.delete {
+  align-self: flex-start;
+  color: var(--accent-text);
+}
+
+.confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--lit);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.missing {
+  margin: 0;
+  color: var(--muted);
+}
