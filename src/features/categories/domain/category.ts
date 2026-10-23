@@ -10,6 +10,7 @@ export interface Subcategory {
   id: string
   categoryId: string
   name: string
+  aliases: string[]
   sortOrder: string
   archivedAt: string | null
 }

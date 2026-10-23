@@ -54,11 +54,8 @@ test('a person adds tasks, moves them through the board and keeps them after rel
   ).toBeVisible()
 
   await page.getByRole('button', { name: 'Nueva tarea' }).click()
-  await page.getByRole('dialog', { name: 'Nueva tarea' }).getByLabel('Título').fill('Idea suelta')
-  await page
-    .getByRole('dialog', { name: 'Nueva tarea' })
-    .getByRole('button', { name: 'Crear tarea' })
-    .click()
+  await page.getByLabel('Qué hay que hacer').fill('Idea suelta')
+  await page.getByLabel('Qué hay que hacer').press('Enter')
   await expect(page.getByText('Hay 1 tarea sin categoría en la')).toBeVisible()
   await page.getByRole('link', { name: 'Bandeja', exact: true }).last().click()
   await expect(
@@ -78,10 +75,8 @@ test('the board works on a phone', async ({ page, request }, testInfo) => {
     .getByRole('navigation', { name: 'Vistas' })
     .getByRole('button', { name: 'Nueva tarea' })
     .click()
-  const panel = page.getByRole('dialog', { name: 'Nueva tarea' })
-  await panel.getByLabel('Título').fill('Llenar hoja de horas')
-  await panel.getByLabel('Categoría', { exact: true }).selectOption({ label: 'Trabajo' })
-  await panel.getByRole('button', { name: 'Crear tarea' }).click()
+  await page.getByLabel('Qué hay que hacer').fill('Llenar hoja de horas #trabajo')
+  await page.getByRole('button', { name: 'Crear tarea' }).click()
 
   await expect(
     page.getByRole('list', { name: 'Trabajo · Por hacer' }).getByText('Llenar hoja de horas'),

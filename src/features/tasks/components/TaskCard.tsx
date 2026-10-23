@@ -4,7 +4,7 @@ import type { QuadrantId } from '@/shared/ui'
 import { formatDue } from '../domain/dueDate'
 import type { Task } from '../domain/task'
 import { overdueLabel, QUADRANT_LABELS } from '../domain/taskRules'
-import { formatDuration } from './formatDuration'
+import { formatDuration } from '../domain/formatDuration'
 import styles from './TaskCard.module.css'
 
 interface TaskCardProps {

@@ -11,12 +11,12 @@ type CategoryUpdate = Database['public']['Tables']['categories']['Update']
 type SubcategoryRow = Database['public']['Tables']['subcategories']['Row']
 
 const UNIQUE_VIOLATION = '23505'
-const SUBCATEGORY_COLUMNS = 'id, category_id, name, sort_order, archived_at'
+const SUBCATEGORY_COLUMNS = 'id, category_id, name, aliases, sort_order, archived_at'
 const CATEGORY_COLUMNS = `id, name, color_slot, aliases, sort_order, important_by_default, urgency_days, max_in_progress, archived_at, subcategories(${SUBCATEGORY_COLUMNS})`
 
 type SubcategorySelection = Pick<
   SubcategoryRow,
-  'id' | 'category_id' | 'name' | 'sort_order' | 'archived_at'
+  'id' | 'category_id' | 'name' | 'aliases' | 'sort_order' | 'archived_at'
 >
 type CategorySelection = Pick<
   CategoryRow,
@@ -40,6 +40,7 @@ function toSubcategory(row: SubcategorySelection): Subcategory {
     id: row.id,
     categoryId: row.category_id,
     name: row.name,
+    aliases: row.aliases,
     sortOrder: row.sort_order,
     archivedAt: row.archived_at,
   }

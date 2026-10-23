@@ -1,7 +1,8 @@
 import { getRouteApi, Link, Outlet, useRouterState } from '@tanstack/react-router'
 import * as m from 'motion/react-m'
+import { QuickCaptureHost } from '@/features/capture'
 import { TaskPanelHost } from '@/features/tasks'
-import { Icon } from '@/shared/ui'
+import { Icon, ToastHost } from '@/shared/ui'
 import styles from './AppShell.module.css'
 import { Sidebar } from './Sidebar'
 import { TabBar } from './TabBar'
@@ -39,6 +40,8 @@ export function AppShell() {
         timezone={profile.timezone}
         inProgressLimit={profile.maxInProgress}
       />
+      <QuickCaptureHost tasks={tasks} categories={categories} timezone={profile.timezone} />
+      <ToastHost />
     </div>
   )
 }

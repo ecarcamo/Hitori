@@ -8,6 +8,7 @@ Web para la compu y PWA para el teléfono. Carriles por categoría, límite de t
 - Decisiones de arquitectura: [`docs/adr/`](docs/adr)
 - Base de datos: [`docs/database.md`](docs/database.md)
 - Inicio de sesión: [`docs/auth.md`](docs/auth.md)
+- Captura rápida (`Ctrl/⌘ + K`): [`docs/capture.md`](docs/capture.md)
 
 ## Requisitos
 

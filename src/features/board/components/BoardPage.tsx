@@ -11,9 +11,8 @@ import {
 } from '@/features/tasks'
 import { useMediaQuery } from '@/shared/lib/useMediaQuery'
 import { useNow } from '@/shared/lib/useNow'
-import { EmptyState, PageHeader } from '@/shared/ui'
-import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { EmptyState, PageHeader, showToast } from '@/shared/ui'
+import { useEffect } from 'react'
 import { buildBoard, laneAnchorId, type Board } from '../domain/boardLayout'
 import { BoardGrid } from './BoardGrid'
 import styles from './BoardPage.module.css'
@@ -21,7 +20,6 @@ import { BoardPager } from './BoardPager'
 import type { TaskMove } from '../hooks/useBoardDrag'
 
 const MOBILE_QUERY = '(width < 768px)'
-const NOTICE_DURATION_MS = 6000
 
 interface BoardPageProps {
   tasks: TaskRepository
@@ -60,25 +58,12 @@ export function BoardPage({
   const openCreate = useTaskPanel((state) => state.openCreate)
   const isMobile = useMediaQuery(MOBILE_QUERY)
   const { updateTask } = useTaskMutations(taskRepository)
-  const [notice, setNotice] = useState<string | null>(null)
   const now = useNow()
 
   const categories = (categoriesQuery.data ?? []).filter(isActive)
   const board = buildBoard(tasksQuery.data ?? [], categories, now, timezone)
   const isLoading = tasksQuery.isPending || categoriesQuery.isPending
   const hasNoCategories = categoriesQuery.isSuccess && categories.length === 0
-
-  useEffect(() => {
-    if (!notice) {
-      return
-    }
-    const timeout = setTimeout(() => {
-      setNotice(null)
-    }, NOTICE_DURATION_MS)
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [notice])
 
   const moveTask = (move: TaskMove) => {
     const warning = inProgressWarning(
@@ -90,7 +75,9 @@ export function BoardPage({
           categories.find((category) => category.id === categoryId)?.maxInProgress ?? null,
       },
     )
-    setNotice(warning ? inProgressWarningMessage(warning) : null)
+    if (warning) {
+      showToast(inProgressWarningMessage(warning))
+    }
     updateTask.mutate({
       id: move.taskId,
       changes: {
@@ -122,12 +109,6 @@ export function BoardPage({
           {tasksQuery.error.message}
         </p>
       ) : null}
-      {createPortal(
-        <p className={styles.notice} role="status" hidden={!notice}>
-          {notice}
-        </p>,
-        document.body,
-      )}
       {hasNoCategories ? (
         <EmptyState title="Primero, tus carriles">
           Cada categoría es un carril del tablero.{' '}

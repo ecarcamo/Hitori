@@ -53,7 +53,14 @@ function setup(tasks: Task[] = [], limit = 3) {
     category('u', 'U', {
       importantByDefault: true,
       subcategories: [
-        { id: 'u-cursos', categoryId: 'u', name: 'Cursos', sortOrder: 'a0', archivedAt: null },
+        {
+          id: 'u-cursos',
+          categoryId: 'u',
+          name: 'Cursos',
+          aliases: [],
+          sortOrder: 'a0',
+          archivedAt: null,
+        },
       ],
     }),
     category('w', 'Trabajo'),

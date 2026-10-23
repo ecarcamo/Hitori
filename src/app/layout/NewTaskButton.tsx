@@ -1,17 +1,16 @@
-import { useTaskPanel } from '@/features/tasks'
+import { shortcutLabel, useCapture } from '@/features/capture'
 import { Button } from '@/shared/ui'
+import styles from './Sidebar.module.css'
 
 export function NewTaskButton() {
-  const openCreate = useTaskPanel((state) => state.openCreate)
+  const open = useCapture((state) => state.open)
 
   return (
-    <Button
-      variant="accent"
-      onClick={() => {
-        openCreate()
-      }}
-    >
+    <Button variant="accent" onClick={open} aria-keyshortcuts="Control+K Meta+K">
       Nueva tarea
+      <kbd className={styles.shortcut} aria-hidden="true">
+        {shortcutLabel()}
+      </kbd>
     </Button>
   )
 }

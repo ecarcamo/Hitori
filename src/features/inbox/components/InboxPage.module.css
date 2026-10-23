@@ -7,3 +7,76 @@
   padding: 0;
   list-style: none;
 }
+
+.triage {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 640px;
+}
+
+.progress {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.triageCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  border-radius: 22px;
+  background: var(--lit);
+}
+
+.triageTitle {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.triageMeta {
+  margin: 0;
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.triageNotes {
+  margin: 0;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.groupTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.lanes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.triageActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.finish {
+  margin-left: auto;
+}

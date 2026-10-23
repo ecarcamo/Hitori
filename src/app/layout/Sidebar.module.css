@@ -64,3 +64,12 @@
     display: none;
   }
 }
+
+.shortcut {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--on-accent) 14%, transparent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
