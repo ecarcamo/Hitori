@@ -9,7 +9,7 @@ function setup() {
   const user = userEvent.setup()
   const auth = createFakeAuthRepository(null)
   const onSignedIn = vi.fn()
-  renderWithProviders(<SignInPage auth={auth} redirectPath="/tablero" onSignedIn={onSignedIn} />)
+  renderWithProviders(<SignInPage auth={auth} redirectPath="/board" onSignedIn={onSignedIn} />)
   return { user, auth, onSignedIn }
 }
 

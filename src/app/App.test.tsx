@@ -31,32 +31,32 @@ function renderAt(
 
 describe('App', () => {
   it('sends visitors without a session to sign in and remembers where they were going', async () => {
-    const { history } = renderAt('/tablero', { session: null })
+    const { history } = renderAt('/board', { session: null })
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Hitori' })).toBeInTheDocument()
-    expect(history.location.pathname).toBe('/entrar')
-    expect(history.location.search).toContain('redirect=%2Ftablero')
+    expect(history.location.pathname).toBe('/sign-in')
+    expect(history.location.search).toContain('redirect=%2Fboard')
   })
 
   it('opens Ahora from the root path when signed in', async () => {
     const { history } = renderAt('/')
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Ahora' })).toBeInTheDocument()
-    expect(history.location.pathname).toBe('/ahora')
+    expect(history.location.pathname).toBe('/now')
   })
 
   it('asks new users to finish the onboarding first', async () => {
-    const { history } = renderAt('/ahora', { profile: { ...ONBOARDED_PROFILE, onboardedAt: null } })
+    const { history } = renderAt('/now', { profile: { ...ONBOARDED_PROFILE, onboardedAt: null } })
 
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Te damos la bienvenida' }),
     ).toBeInTheDocument()
-    expect(history.location.pathname).toBe('/bienvenida')
+    expect(history.location.pathname).toBe('/welcome')
   })
 
   it('marks the current view in the navigation and moves between views', async () => {
     const user = userEvent.setup()
-    renderAt('/ahora')
+    renderAt('/now')
 
     const [sidebar] = await screen.findAllByRole('navigation', { name: 'Vistas' })
     if (!sidebar) {
@@ -72,18 +72,18 @@ describe('App', () => {
 
   it('signs out from the account page', async () => {
     const user = userEvent.setup()
-    const { history, auth } = renderAt('/ajustes/cuenta')
+    const { history, auth } = renderAt('/settings/account')
 
     await user.click(await screen.findByRole('button', { name: 'Cerrar sesión' }))
 
     expect(auth.signOut).toHaveBeenCalled()
     expect(await screen.findByRole('heading', { level: 1, name: 'Hitori' })).toBeInTheDocument()
-    expect(history.location.pathname).toBe('/entrar')
+    expect(history.location.pathname).toBe('/sign-in')
   })
 
   it('tells that creating tasks is coming soon', async () => {
     const user = userEvent.setup()
-    renderAt('/ahora')
+    renderAt('/now')
 
     const [newTaskButton] = await screen.findAllByRole('button', { name: 'Nueva tarea' })
     if (!newTaskButton) {
@@ -95,11 +95,19 @@ describe('App', () => {
   })
 
   it('applies the theme and mode to the document', async () => {
-    renderAt('/ahora')
+    renderAt('/now')
 
     await screen.findByRole('heading', { level: 1, name: 'Ahora' })
     expect(document.documentElement).toHaveAttribute('data-theme', 'templo')
     expect(document.documentElement).toHaveAttribute('data-mode', 'dark')
+  })
+
+  it('moves old Spanish links to their English paths', async () => {
+    const { history } = renderAt('/ajustes/categorias?abrir=1')
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Categorías' })).toBeInTheDocument()
+    expect(history.location.pathname).toBe('/settings/categories')
+    expect(history.location.search).toBe('?abrir=1')
   })
 
   it('shows a way back for unknown paths', async () => {

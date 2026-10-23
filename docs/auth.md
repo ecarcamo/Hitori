@@ -20,18 +20,18 @@ sequenceDiagram
     S-->>A: sesión
     A->>A: ¿terminó la bienvenida?
     alt no
-        A-->>P: /bienvenida (nombre y zona horaria)
+        A-->>P: /welcome (nombre y zona horaria)
     else sí
-        A-->>P: la página que pidió, o /ahora
+        A-->>P: la página que pidió, o /now
     end
 ```
 
 ## Rutas
 
-- `/entrar` es pública. Si ya hay sesión, manda a la página pedida.
-- Todo lo demás exige sesión. Sin sesión se va a `/entrar?redirect=<ruta>` y, al entrar, vuelve a esa ruta (solo rutas internas).
-- Con sesión pero sin terminar la bienvenida, todo manda a `/bienvenida`.
-- Al cerrar sesión (aquí o en otra pestaña) se limpia la caché y se vuelve a `/entrar`.
+- `/sign-in` es pública. Si ya hay sesión, manda a la página pedida.
+- Todo lo demás exige sesión. Sin sesión se va a `/sign-in?redirect=<ruta>` y, al entrar, vuelve a esa ruta (solo rutas internas).
+- Con sesión pero sin terminar la bienvenida, todo manda a `/welcome`.
+- Al cerrar sesión (aquí o en otra pestaña) se limpia la caché y se vuelve a `/sign-in`.
 
 ## Local
 

@@ -13,7 +13,7 @@ export function Sidebar() {
 
   return (
     <aside className={styles.sidebar}>
-      <Link to="/ahora" className={styles.brand}>
+      <Link to="/now" className={styles.brand}>
         <BrandMark />
         Hitori
       </Link>

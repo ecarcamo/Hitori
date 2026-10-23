@@ -7,7 +7,7 @@ export function NotFoundPage() {
     <main className={styles.screen}>
       <PageHeader title="No está aquí" description="Esta página no existe." />
       <EmptyState title="Vuelve a lo que te toca">
-        <Link to="/ahora" className={styles.link}>
+        <Link to="/now" className={styles.link}>
           Ir a Ahora
         </Link>
       </EmptyState>

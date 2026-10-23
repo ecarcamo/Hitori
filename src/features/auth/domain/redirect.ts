@@ -1,5 +1,5 @@
-export const DEFAULT_AFTER_SIGN_IN = '/ahora'
-export const SIGN_IN_PATH = '/entrar'
+export const DEFAULT_AFTER_SIGN_IN = '/now'
+export const SIGN_IN_PATH = '/sign-in'
 
 export function safeRedirectPath(value: unknown): string {
   if (typeof value !== 'string') {

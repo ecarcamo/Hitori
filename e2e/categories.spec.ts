@@ -28,7 +28,7 @@ test('a person recreates their lanes and the order survives a reload', async ({
   request,
 }, testInfo) => {
   await signUpAndOnboard(page, request, uniqueEmail(`categories-${testInfo.project.name}`))
-  await page.goto('/ajustes/categorias')
+  await page.goto('/settings/categories')
   await expect(page.getByText('Todavía no tienes categorías')).toBeVisible()
 
   await createCategory(page, 'U', ['Cursos', 'Auxiliaturas'])
@@ -61,7 +61,7 @@ test('a person recreates their lanes and the order survives a reload', async ({
 test('lanes can be reordered with the keyboard', async ({ page, request }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'El arrastre con teclado se prueba en escritorio')
   await signUpAndOnboard(page, request, uniqueEmail('categories-keyboard'))
-  await page.goto('/ajustes/categorias')
+  await page.goto('/settings/categories')
   await page.getByRole('button', { name: 'Usar el ejemplo' }).click()
   await expect.poll(() => laneNames(page)).toEqual(['Estudios', 'Trabajo', 'Personal'])
 

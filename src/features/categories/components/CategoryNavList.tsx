@@ -22,7 +22,7 @@ export function CategoryNavList({ repository, linkClassName }: CategoryNavListPr
     <>
       <span className={styles.label}>Categorías</span>
       {active.map((category) => (
-        <Link key={category.id} to="/tablero" className={linkClassName}>
+        <Link key={category.id} to="/board" className={linkClassName}>
           <CategoryDot tone={category.tone} />
           {category.name}
         </Link>
