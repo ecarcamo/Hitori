@@ -5,6 +5,7 @@ import type { AuthSession } from '@/features/auth'
 import type { Profile } from '@/features/profile'
 import {
   createFakeAuthRepository,
+  createFakeCategoryRepository,
   createFakeProfileRepository,
   ONBOARDED_PROFILE,
   TEST_SESSION,
@@ -23,7 +24,8 @@ function renderAt(
   const history = createMemoryHistory({ initialEntries: [path] })
   const auth = createFakeAuthRepository(session)
   const profiles = createFakeProfileRepository(profile)
-  render(<App dependencies={{ auth, profiles }} history={history} />)
+  const categories = createFakeCategoryRepository()
+  render(<App dependencies={{ auth, profiles, categories }} history={history} />)
   return { history, auth, profiles }
 }
 

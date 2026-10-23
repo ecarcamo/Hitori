@@ -4,6 +4,7 @@ import { LazyMotion, MotionConfig, domAnimation } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { useDocumentAppearance } from '@/features/appearance'
 import { SIGN_IN_PATH, type AuthRepository } from '@/features/auth'
+import type { CategoryRepository } from '@/features/categories'
 import type { ProfileRepository } from '@/features/profile'
 import { createQueryClient } from '@/shared/lib/queryClient'
 import { createAppRouter } from './router'
@@ -11,6 +12,7 @@ import { createAppRouter } from './router'
 export interface AppDependencies {
   auth: AuthRepository
   profiles: ProfileRepository
+  categories: CategoryRepository
 }
 
 interface AppProps {

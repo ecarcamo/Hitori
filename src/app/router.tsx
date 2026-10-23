@@ -10,7 +10,7 @@ import {
 import { AppearancePage } from '@/features/appearance'
 import { DEFAULT_AFTER_SIGN_IN, safeRedirectPath, type AuthRepository } from '@/features/auth'
 import { BoardPage } from '@/features/board'
-import { CategoriesPage } from '@/features/categories'
+import type { CategoryRepository } from '@/features/categories'
 import { InboxPage } from '@/features/inbox'
 import { MatrixPage } from '@/features/matrix'
 import { NowPage } from '@/features/now'
@@ -21,6 +21,7 @@ import { NotFoundPage } from './layout/NotFoundPage'
 import { SettingsPage } from './layout/SettingsPage'
 import { HOME_PATH } from './navigation'
 import { AccountView } from './routes/AccountView'
+import { CategoriesView } from './routes/CategoriesView'
 import { OnboardingView } from './routes/OnboardingView'
 import { SignInView } from './routes/SignInView'
 
@@ -28,6 +29,7 @@ export interface RouterContext {
   queryClient: QueryClient
   auth: AuthRepository
   profiles: ProfileRepository
+  categories: CategoryRepository
 }
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
@@ -139,7 +141,7 @@ const accountRoute = createRoute({
 const categoriesRoute = createRoute({
   getParentRoute: () => shellRoute,
   path: '/ajustes/categorias',
-  component: CategoriesPage,
+  component: CategoriesView,
 })
 
 const appearanceRoute = createRoute({
