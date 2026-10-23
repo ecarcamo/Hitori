@@ -90,7 +90,12 @@ export function createFakeCategoryRepository(initial: Category[] = []) {
       return Promise.resolve()
     }),
     createSubcategory: vi.fn((input: Parameters<CategoryRepository['createSubcategory']>[0]) => {
-      const subcategory: Subcategory = { id: nextId('subcategory'), archivedAt: null, ...input }
+      const subcategory: Subcategory = {
+        id: nextId('subcategory'),
+        aliases: [],
+        archivedAt: null,
+        ...input,
+      }
       categories = categories.map((category) =>
         category.id === input.categoryId
           ? { ...category, subcategories: [...category.subcategories, subcategory] }
