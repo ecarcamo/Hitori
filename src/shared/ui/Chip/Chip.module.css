@@ -1,0 +1,83 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--lit);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.chip:has(.remove) {
+  padding-right: 4px;
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+}
+
+.remove:hover {
+  background: var(--lit2);
+  color: var(--ink);
+}
+
+.remove svg {
+  width: 14px;
+  height: 14px;
+}
+
+.add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--accent-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.add svg {
+  width: 16px;
+  height: 16px;
+}
+
+.editor {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input {
+  width: 180px;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--lit2);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.input[aria-invalid='true'] {
+  outline: 2px solid var(--accent-text);
+}
+
+.error {
+  color: var(--accent-text);
+  font-size: 13px;
+  font-weight: 600;
+}

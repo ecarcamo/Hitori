@@ -1,5 +1,6 @@
 import { vi } from 'vitest'
 import type { AuthRepository, AuthSession } from '@/features/auth'
+import type { Category, CategoryRepository, Subcategory } from '@/features/categories'
 import type { Profile, ProfileRepository } from '@/features/profile'
 
 export const TEST_SESSION: AuthSession = { userId: 'user-1', email: 'ana@hitori.test' }
@@ -51,6 +52,59 @@ export function createFakeProfileRepository(initial: Profile = ONBOARDED_PROFILE
       return Promise.resolve(profile)
     }),
   } satisfies ProfileRepository
+
+  return repository
+}
+
+export function createFakeCategoryRepository(initial: Category[] = []) {
+  let categories = structuredClone(initial)
+  let sequence = 0
+  const nextId = (prefix: string) => {
+    sequence += 1
+    return `${prefix}-${String(sequence)}`
+  }
+
+  const repository = {
+    listCategories: vi.fn(() => Promise.resolve(structuredClone(categories))),
+    createCategory: vi.fn((input: Parameters<CategoryRepository['createCategory']>[0]) => {
+      const category: Category = {
+        id: nextId('category'),
+        aliases: [],
+        importantByDefault: false,
+        urgencyDays: null,
+        maxInProgress: null,
+        archivedAt: null,
+        subcategories: [],
+        ...input,
+      }
+      categories = [...categories, category]
+      return Promise.resolve(structuredClone(category))
+    }),
+    updateCategory: vi.fn((id: string, changes: Partial<Category>) => {
+      categories = categories.map((category) =>
+        category.id === id ? { ...category, ...changes } : category,
+      )
+      return Promise.resolve()
+    }),
+    createSubcategory: vi.fn((input: Parameters<CategoryRepository['createSubcategory']>[0]) => {
+      const subcategory: Subcategory = { id: nextId('subcategory'), archivedAt: null, ...input }
+      categories = categories.map((category) =>
+        category.id === input.categoryId
+          ? { ...category, subcategories: [...category.subcategories, subcategory] }
+          : category,
+      )
+      return Promise.resolve(structuredClone(subcategory))
+    }),
+    updateSubcategory: vi.fn((id: string, changes: Partial<Subcategory>) => {
+      categories = categories.map((category) => ({
+        ...category,
+        subcategories: category.subcategories.map((subcategory) =>
+          subcategory.id === id ? { ...subcategory, ...changes } : subcategory,
+        ),
+      }))
+      return Promise.resolve()
+    }),
+  } satisfies CategoryRepository
 
   return repository
 }

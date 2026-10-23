@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from '@/app/App'
 import { createSupabaseAuthRepository } from '@/features/auth'
+import { createSupabaseCategoryRepository } from '@/features/categories'
 import { createSupabaseProfileRepository } from '@/features/profile'
 import { readSupabaseConfig } from '@/shared/lib/env'
 import { createSupabaseClient } from '@/shared/lib/supabase'
@@ -21,6 +22,7 @@ createRoot(rootElement).render(
       dependencies={{
         auth: createSupabaseAuthRepository(supabase),
         profiles: createSupabaseProfileRepository(supabase),
+        categories: createSupabaseCategoryRepository(supabase),
       }}
     />
   </StrictMode>,
