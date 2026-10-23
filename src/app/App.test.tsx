@@ -79,6 +79,19 @@ describe('App', () => {
     expect(history.location.pathname).toBe('/entrar')
   })
 
+  it('tells that creating tasks is coming soon', async () => {
+    const user = userEvent.setup()
+    renderAt('/ahora')
+
+    const [newTaskButton] = await screen.findAllByRole('button', { name: 'Nueva tarea' })
+    if (!newTaskButton) {
+      throw new Error('Falta el botón de nueva tarea')
+    }
+    await user.click(newTaskButton)
+
+    expect(screen.getByRole('dialog', { name: 'Crear tareas llega pronto' })).toBeInTheDocument()
+  })
+
   it('applies the theme and mode to the document', async () => {
     renderAt('/ahora')
 

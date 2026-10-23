@@ -3,7 +3,7 @@
 Hitori no usa contraseñas. Hay dos formas de entrar:
 
 1. **Código por correo:** la persona escribe su correo, recibe un código de 6 dígitos (vence en 10 minutos) y lo escribe en la app. Es `signInWithOtp` + `verifyOtp` de Supabase Auth.
-2. **Google:** OAuth con permisos básicos (`openid`, `email`, `profile`), que no requieren que Google revise la app.
+2. **Google:** OAuth con permisos básicos (`openid`, `email`, `profile`), que no requieren que Google revise la app. **Queda fuera del MVP:** el botón se ve, pero abre el aviso «Muy pronto». Se enciende con `VITE_GOOGLE_SIGN_IN=true` en `.env.production` cuando el cliente OAuth esté configurado.
 
 ```mermaid
 sequenceDiagram
@@ -45,4 +45,4 @@ Supabase local manda los correos a su buzón de prueba: <http://127.0.0.1:55324>
 | Authentication → Emails → SMTP Settings | Resend: `smtp.resend.com`, puerto `465`, usuario `resend`, remitente `Hitori <no-reply@escudevwork.com>`                                         |
 | Authentication → Emails → Templates     | «Confirm signup» y «Magic Link» con el asunto y el HTML de `supabase/templates/sign-in-code.html`                                                |
 | Authentication → Providers → Email      | Email OTP de 6 dígitos y 600 segundos de vigencia                                                                                                |
-| Authentication → Providers → Google     | Client ID y secret del cliente OAuth de Google Cloud                                                                                             |
+| Authentication → Providers → Google     | Pendiente (fuera del MVP): Client ID y secret del cliente OAuth de Google Cloud                                                                  |
