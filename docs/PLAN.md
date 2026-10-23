@@ -282,15 +282,15 @@ Ojo con la capa gratis de Supabase: pausa el proyecto tras ~7 días sin activida
 
 ### Fases 4 a 6 — Calendarios e integraciones (se detallan al llegar)
 
-| Etapa                                         | Objetivo                                                                                                 |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| 12 · Google Calendar: conexión                | OAuth en Edge Function, tokens en Vault, listar calendarios, elegir escribir/solo leer.                  |
-| 13 · Reglas de ruteo y bloques                | Categoría → calendario; crear `time_blocks` como eventos (título real u «Ocupado»).                      |
-| 14 · Vista Semana                             | Sin agendar a un lado, calendario unificado al otro, arrastrar para crear bloque, choques entre cuentas. |
-| 15 · Sincronía de dos vías                    | _Push notifications_ de Google, `etag`, conflictos y borrados.                                           |
-| 16 · Microsoft e iCloud                       | Graph (OAuth) y CalDAV.                                                                                  |
-| 17 · MCP y voz                                | Servidor MCP remoto (`add_task`, `list_tasks`, `daily_briefing`…) y dictado con Web Speech API.          |
-| 18 · Revisión semanal, Canvas y exportaciones | Progreso por categoría, importar ICS de Canvas, exportar a Markdown/Notion.                              |
+| Etapa                                         | Objetivo                                                                                                           |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 12 · Google Calendar: conexión                | OAuth en Edge Function, tokens en Vault, listar calendarios, elegir escribir/solo leer.                            |
+| 13 · Reglas de ruteo y bloques                | Categoría → calendario; crear `time_blocks` como eventos (título real u «Ocupado»).                                |
+| 14 · Vista Semana                             | Sin agendar a un lado, calendario unificado al otro, arrastrar para crear bloque, choques entre cuentas.           |
+| 15 · Sincronía de dos vías                    | _Push notifications_ de Google, `etag`, conflictos y borrados.                                                     |
+| 16 · Microsoft e iCloud                       | Graph (OAuth) y CalDAV.                                                                                            |
+| 17 · Google, MCP y voz                        | Entrar con Google, servidor MCP remoto (`add_task`, `list_tasks`, `daily_briefing`…) y dictado con Web Speech API. |
+| 18 · Revisión semanal, Canvas y exportaciones | Progreso por categoría, importar ICS de Canvas, exportar a Markdown/Notion.                                        |
 
 ---
 

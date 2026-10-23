@@ -66,6 +66,7 @@ Reglas de dependencia (las revisa ESLint):
 - Identificadores y commits en inglés; todo texto visible en español.
 - Sin comentarios en el código: los nombres explican.
 - Las reglas del negocio son funciones puras en `domain/`, siempre con prueba.
+- Lo que todavía no existe nunca es un botón roto ni deshabilitado sin explicación: abre `ComingSoonDialog` («Muy pronto») con lo que viene y qué hacer mientras tanto.
 - Commits con [Conventional Commits](https://www.conventionalcommits.org/): `feat(board): …`, `fix(capture): …`.
 - Una rama y un PR por etapa; `main` solo recibe PRs con la CI en verde y se fusiona con squash.
 - Todo PR con cambios visuales lleva capturas (escritorio y móvil) y todo PR con cambios de lógica lleva un diagrama en Mermaid: ver [`docs/pull-requests.md`](docs/pull-requests.md).

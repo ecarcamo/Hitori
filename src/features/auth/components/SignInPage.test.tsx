@@ -65,11 +65,18 @@ describe('SignInPage', () => {
     expect(screen.getByRole('button', { name: 'Entrar' })).toBeDisabled()
   })
 
-  it('starts the Google flow toward the requested page', async () => {
+  it('explains that Google sign-in is coming soon instead of failing', async () => {
     const { user, auth } = setup()
 
     await user.click(screen.getByRole('button', { name: 'Continuar con Google' }))
 
-    expect(auth.signInWithGoogle).toHaveBeenCalledWith('/tablero')
+    expect(
+      screen.getByRole('dialog', { name: 'Entrar con Google llega pronto' }),
+    ).toBeInTheDocument()
+    expect(auth.signInWithGoogle).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Usar mi correo' }))
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 })
