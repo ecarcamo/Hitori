@@ -21,9 +21,11 @@ test('a person adds tasks, moves them through the board and keeps them after rel
   await panel.getByRole('button', { name: 'Crear tarea' }).click()
 
   const todo = page.getByRole('list', { name: 'Estudios · Por hacer' })
-  await expect(todo.getByRole('button', { name: /Entregar Tarea 6/ })).toContainText('Tareas')
+  await expect(todo.getByRole('button', { name: /^(?!Mover ).*Entregar Tarea 6/ })).toContainText(
+    'Tareas',
+  )
 
-  await todo.getByRole('button', { name: /Entregar Tarea 6/ }).click()
+  await todo.getByRole('button', { name: /^(?!Mover ).*Entregar Tarea 6/ }).click()
   const editor = page.getByRole('dialog', { name: 'Tarea' })
   await expect(editor.getByLabel('Fecha límite')).toHaveValue('2030-05-10T20:00')
   await editor.getByRole('radio', { name: 'En curso' }).click()
@@ -37,9 +39,11 @@ test('a person adds tasks, moves them through the board and keeps them after rel
   await expect(page.getByRole('img', { name: '1 de 3 en curso' })).toBeVisible()
 
   await page.reload()
-  await expect(doing.getByRole('button', { name: /Entregar Tarea 6/ })).toContainText('0/1')
+  await expect(doing.getByRole('button', { name: /^(?!Mover ).*Entregar Tarea 6/ })).toContainText(
+    '0/1',
+  )
 
-  await doing.getByRole('button', { name: /Entregar Tarea 6/ }).click()
+  await doing.getByRole('button', { name: /^(?!Mover ).*Entregar Tarea 6/ }).click()
   await page.getByRole('dialog', { name: 'Tarea' }).getByRole('radio', { name: 'Hecho' }).click()
   await page
     .getByRole('dialog', { name: 'Tarea' })
