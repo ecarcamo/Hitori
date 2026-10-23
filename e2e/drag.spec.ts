@@ -11,6 +11,9 @@ async function createTask(page: Page, lane: string, title: string) {
 
 async function dragWithMouse(page: Page, title: string, target: Locator) {
   await page.waitForLoadState('networkidle')
+  await page.waitForFunction(() =>
+    document.getAnimations().every((animation) => animation.playState !== 'running'),
+  )
   const source = page.getByRole('button', { name: new RegExp(`^(?!Mover ).*${title}`) })
   const from = await source.first().boundingBox()
   if (!from) {
