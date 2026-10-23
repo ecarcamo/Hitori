@@ -16,7 +16,7 @@ import {
   type TaskContext,
   type TaskFields,
 } from '../domain/task'
-import { formatDuration } from './formatDuration'
+import { formatDuration } from '../domain/formatDuration'
 import styles from './TaskForm.module.css'
 
 const ANY = ''

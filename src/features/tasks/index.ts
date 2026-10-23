@@ -1,6 +1,17 @@
 export { TaskCard } from './components/TaskCard'
 export { TaskPanelHost } from './components/TaskPanelHost'
-export { STATUS_LABELS, TASK_STATUSES, type Task, type TaskStatus } from './domain/task'
+export { formatDue } from './domain/dueDate'
+export { formatDuration } from './domain/formatDuration'
+export {
+  CONTEXT_LABELS,
+  emptyTaskFields,
+  STATUS_LABELS,
+  TASK_STATUSES,
+  type Task,
+  type TaskContext,
+  type TaskFields,
+  type TaskStatus,
+} from './domain/task'
 export {
   DEFAULT_URGENCY_DAYS,
   inProgressWarning,
