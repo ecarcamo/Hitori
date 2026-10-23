@@ -221,16 +221,26 @@ Ojo con la capa gratis de Supabase: pausa el proyecto tras ~7 días sin activida
 
 **Terminado cuando:** todas las rutas están en inglés y abrir una ruta vieja lleva a su equivalente nueva.
 
-#### Etapa 5 · Tareas y Tablero
+#### Etapa 5a · Tareas y Tablero
 
-**Objetivo:** el diferenciador: el tablero con carriles por categoría × columnas de estado, fluido y con límite en curso.
+**Objetivo:** poder meter las tareas reales y trabajar con ellas en el tablero.
 
-- `domain/tasks`: modelo, transiciones de estado, días de atraso, «lista para hacer», límite en curso (suave: avisa, no bloquea).
+- `domain/tasks`: modelo, días de atraso, urgencia y cuadrante, límite en curso (suave: avisa, no bloquea), fechas en la zona del perfil.
 - Repositorio + hooks con actualizaciones optimistas.
-- Tablero escritorio: carriles × 4 columnas, columna «En curso» encendida, arrastrar entre columnas y carriles (dnd-kit), teclado incluido.
-- Tablero móvil: un carril a la vez (chips) y columnas como páginas con _snap_.
-- Detalle de tarea (panel lateral / hoja): todos los campos, checklist, notas.
-  **Terminado cuando:** se crean, editan, mueven y completan tareas en escritorio y móvil; mover a «En curso» con 3 ya en curso muestra el aviso; el dominio tiene sus pruebas.
+- Tablero escritorio: carriles × 4 columnas, «En curso» encendida, medidor del límite, «+» por carril.
+- Tablero móvil: columnas como pestañas con las tareas agrupadas por carril.
+- Panel de tarea (crear y editar): todos los campos, checklist y borrar con confirmación. Cambiar de columna desde el estado.
+- Bandeja con las tareas sin categoría.
+  **Terminado cuando:** se crean, editan, mueven de estado y completan tareas en escritorio y móvil; pasar a «En curso» con el límite lleno muestra el aviso; el dominio tiene sus pruebas.
+
+#### Etapa 5b · Arrastrar y soltar
+
+**Objetivo:** mover tareas entre columnas y carriles con el mouse, el dedo o el teclado.
+
+- dnd-kit entre celdas (columna × carril) y dentro de cada celda, con fractional indexing.
+- En móvil: mantener presionada una tarjeta para moverla.
+- Anuncios en español para lectores de pantalla.
+  **Terminado cuando:** arrastrar cambia estado, carril y orden, y se conserva al recargar.
 
 #### Etapa 6 · Captura rápida y Bandeja
 
@@ -242,6 +252,15 @@ Ojo con la capa gratis de Supabase: pausa el proyecto tras ~7 días sin activida
   **Terminado cuando:** «Entregar Tarea 6 IngSoft vie 8pm !» crea la tarea con categoría, fecha (zona del usuario) e importante; la bandeja se vacía con triaje.
 
 > **Hito v0.1.0 — MVP en vivo.** Reemplaza el pizarrón de Notion para el uso diario.
+
+#### Etapa 6b · Servidor MCP
+
+**Objetivo:** que un asistente de IA pueda organizar tus tareas por ti, sin que Hitori pague ningún modelo.
+
+- Servidor MCP remoto en una Supabase Edge Function, con OAuth de Supabase Auth: actúa con la sesión de la persona y las políticas RLS aplican igual.
+- Herramientas: `add_task`, `list_tasks`, `move_task`, `complete_task`, `daily_briefing`; lo destructivo pide confirmación.
+- Reutiliza las reglas puras de `domain/` (urgencia, cuadrante, atraso).
+  **Terminado cuando:** un asistente conectado crea, lista y completa tareas de la cuenta, y no puede ver las de otra.
 
 ### Fase 2 — Priorizar
 
@@ -292,15 +311,15 @@ Ojo con la capa gratis de Supabase: pausa el proyecto tras ~7 días sin activida
 
 ### Fases 4 a 6 — Calendarios e integraciones (se detallan al llegar)
 
-| Etapa                                         | Objetivo                                                                                                           |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| 12 · Google Calendar: conexión                | OAuth en Edge Function, tokens en Vault, listar calendarios, elegir escribir/solo leer.                            |
-| 13 · Reglas de ruteo y bloques                | Categoría → calendario; crear `time_blocks` como eventos (título real u «Ocupado»).                                |
-| 14 · Vista Semana                             | Sin agendar a un lado, calendario unificado al otro, arrastrar para crear bloque, choques entre cuentas.           |
-| 15 · Sincronía de dos vías                    | _Push notifications_ de Google, `etag`, conflictos y borrados.                                                     |
-| 16 · Microsoft e iCloud                       | Graph (OAuth) y CalDAV.                                                                                            |
-| 17 · Google, MCP y voz                        | Entrar con Google, servidor MCP remoto (`add_task`, `list_tasks`, `daily_briefing`…) y dictado con Web Speech API. |
-| 18 · Revisión semanal, Canvas y exportaciones | Progreso por categoría, importar ICS de Canvas, exportar a Markdown/Notion.                                        |
+| Etapa                                         | Objetivo                                                                                                 |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 12 · Google Calendar: conexión                | OAuth en Edge Function, tokens en Vault, listar calendarios, elegir escribir/solo leer.                  |
+| 13 · Reglas de ruteo y bloques                | Categoría → calendario; crear `time_blocks` como eventos (título real u «Ocupado»).                      |
+| 14 · Vista Semana                             | Sin agendar a un lado, calendario unificado al otro, arrastrar para crear bloque, choques entre cuentas. |
+| 15 · Sincronía de dos vías                    | _Push notifications_ de Google, `etag`, conflictos y borrados.                                           |
+| 16 · Microsoft e iCloud                       | Graph (OAuth) y CalDAV.                                                                                  |
+| 17 · Google y voz                             | Entrar con Google y dictado con Web Speech API.                                                          |
+| 18 · Revisión semanal, Canvas y exportaciones | Progreso por categoría, importar ICS de Canvas, exportar a Markdown/Notion.                              |
 
 ---
 
