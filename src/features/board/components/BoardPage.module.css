@@ -158,3 +158,103 @@
   color: var(--accent-text);
   font-weight: 600;
 }
+
+.sortable {
+  position: relative;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.dragging {
+  opacity: 0.35;
+}
+
+.dragHandle {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  opacity: 0;
+  cursor: grab;
+  transition: opacity 0.15s ease;
+}
+
+.dragHandle svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 3.2;
+}
+
+.sortable:hover .dragHandle,
+.dragHandle:focus-visible {
+  opacity: 1;
+}
+
+.over {
+  outline: 2px dashed var(--faint);
+  outline-offset: -2px;
+  border-radius: 14px;
+}
+
+.overlay {
+  cursor: grabbing;
+  box-shadow: 0 24px 48px -20px var(--scrim);
+  transform: rotate(1.5deg);
+  border-radius: var(--radius-card);
+}
+
+.notice {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  z-index: 30;
+  width: min(520px, calc(100vw - 32px));
+  margin: 0;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: var(--lit2);
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 21px;
+  box-shadow: 0 18px 40px -18px var(--scrim);
+  transform: translateX(-50%);
+  animation: notice-in 0.25s ease-out;
+}
+
+.notice[hidden] {
+  display: none;
+}
+
+@keyframes notice-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+}
+
+@media (width < 768px) {
+  .notice {
+    bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice {
+    animation: none;
+  }
+}
+
+@media (hover: none) {
+  .dragHandle {
+    display: none;
+  }
+}

@@ -69,7 +69,7 @@ describe('inProgressWarning', () => {
   it('warns when the global limit is reached', () => {
     expect(
       inProgressWarning(tasks, { id: 'c', categoryId: 'w', nextStatus: 'in_progress' }, limits(2)),
-    ).toEqual({ kind: 'global', limit: 2 })
+    ).toEqual({ kind: 'global', limit: 2, count: 2 })
   })
 
   it('warns when the category limit is reached', () => {
@@ -79,7 +79,7 @@ describe('inProgressWarning', () => {
         { id: null, categoryId: 'u', nextStatus: 'in_progress' },
         limits(3, 2),
       ),
-    ).toEqual({ kind: 'category', limit: 2 })
+    ).toEqual({ kind: 'category', limit: 2, count: 2 })
   })
 
   it('stays quiet while there is room or the task is not starting', () => {

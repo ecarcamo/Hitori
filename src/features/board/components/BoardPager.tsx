@@ -1,9 +1,20 @@
 import { useState } from 'react'
-import { STATUS_LABELS, TASK_STATUSES, type TaskStatus } from '@/features/tasks'
+import {
+  quadrantOf,
+  STATUS_LABELS,
+  TASK_STATUSES,
+  TaskCard,
+  type TaskStatus,
+} from '@/features/tasks'
 import { CategoryDot, SegmentedControl, WipMeter } from '@/shared/ui'
 import { laneAnchorId, type Board } from '../domain/boardLayout'
+import { cellsOf } from '../domain/cells'
+import { cellKeyOf, parseCellKey } from '../domain/placement'
+import type { TaskMove } from '../hooks/useBoardDrag'
+import { BoardDnd } from './BoardDnd'
 import styles from './BoardPage.module.css'
 import { BoardTaskList } from './BoardTaskList'
+import { DroppableCell } from './DroppableCell'
 
 interface BoardPagerProps {
   board: Board
@@ -12,6 +23,7 @@ interface BoardPagerProps {
   urgencyDays: number
   now: Date
   onOpen: (taskId: string) => void
+  onMove: (move: TaskMove) => void
 }
 
 export function BoardPager({
@@ -21,13 +33,19 @@ export function BoardPager({
   urgencyDays,
   now,
   onOpen,
+  onMove,
 }: BoardPagerProps) {
   const [status, setStatus] = useState<TaskStatus>('todo')
-  const lanes = board.lanes.filter((lane) => lane.cells[status].length > 0)
   const options = TASK_STATUSES.map((value) => ({
     value,
     label: `${STATUS_LABELS[value]} ${String(board.totals[value])}`,
   }))
+  const isEmpty = board.totals[status] === 0
+
+  const cellLabel = (cellKey: string) => {
+    const lane = board.lanes.find((item) => item.category.id === parseCellKey(cellKey)?.categoryId)
+    return lane ? `${lane.category.name} · ${STATUS_LABELS[status]}` : 'otro carril'
+  }
 
   return (
     <section className={styles.pager} aria-label="Tablero por estado">
@@ -44,26 +62,57 @@ export function BoardPager({
           <WipMeter used={board.totals.in_progress} limit={inProgressLimit} />
         </p>
       ) : null}
-      {lanes.length === 0 ? <p className={styles.empty}>No hay tareas aquí.</p> : null}
-      {lanes.map((lane) => (
-        <div key={lane.category.id} className={styles.pagerLane}>
-          <h3 id={laneAnchorId(lane.category.id)} className={styles.laneHeader}>
-            <CategoryDot tone={lane.category.tone} />
-            {lane.category.name}
-          </h3>
-          <BoardTaskList
-            label={`${lane.category.name} · ${STATUS_LABELS[status]}`}
-            tasks={lane.cells[status]}
-            category={lane.category}
+      {isEmpty ? <p className={styles.empty}>No hay tareas aquí.</p> : null}
+      <BoardDnd
+        cells={cellsOf(board, [status])}
+        cellLabel={cellLabel}
+        onMove={onMove}
+        renderOverlay={(task) => (
+          <TaskCard
+            task={task}
+            quadrant={quadrantOf(task, now, urgencyDays, timezone)}
+            subcategoryName={null}
             timezone={timezone}
-            urgencyDays={urgencyDays}
             now={now}
-            isLit={status === 'in_progress'}
-            emptyText=""
+            isLit
             onOpen={onOpen}
           />
-        </div>
-      ))}
+        )}
+      >
+        {(cells) =>
+          board.lanes.map((lane) => {
+            const key = cellKeyOf(lane.category.id, status)
+            const tasks = cells[key] ?? []
+            if (isEmpty) {
+              return null
+            }
+            return (
+              <DroppableCell
+                key={lane.category.id}
+                id={key}
+                itemIds={tasks.map((task) => task.id)}
+                className={styles.pagerLane}
+              >
+                <h3 id={laneAnchorId(lane.category.id)} className={styles.laneHeader}>
+                  <CategoryDot tone={lane.category.tone} />
+                  {lane.category.name}
+                </h3>
+                <BoardTaskList
+                  label={cellLabel(key)}
+                  tasks={tasks}
+                  category={lane.category}
+                  timezone={timezone}
+                  urgencyDays={urgencyDays}
+                  now={now}
+                  isLit={status === 'in_progress'}
+                  emptyText="Suelta aquí para moverla a este carril"
+                  onOpen={onOpen}
+                />
+              </DroppableCell>
+            )
+          })
+        }
+      </BoardDnd>
     </section>
   )
 }

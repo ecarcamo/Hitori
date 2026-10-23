@@ -91,7 +91,9 @@ describe('BoardPage', () => {
     ])
 
     const todo = await screen.findByRole('list', { name: 'U · Por hacer' })
-    expect(within(todo).getByRole('button', { name: /Publicar notas/ })).toHaveTextContent('Cursos')
+    expect(
+      within(todo).getByRole('button', { name: /^(?!Mover ).*Publicar notas/ }),
+    ).toHaveTextContent('Cursos')
     expect(
       within(screen.getByRole('list', { name: 'Trabajo · En curso' })).getByText('Revisar PR'),
     ).toBeInTheDocument()
@@ -148,11 +150,13 @@ describe('BoardPage', () => {
       2,
     )
 
-    await user.click(await screen.findByRole('button', { name: /Tres/ }))
+    await user.click(await screen.findByRole('button', { name: /^(?!Mover ).*Tres/ }))
     const panel = screen.getByRole('dialog', { name: 'Tarea' })
     await user.click(within(panel).getByRole('radio', { name: 'En curso' }))
 
-    expect(within(panel).getByRole('status')).toHaveTextContent('Ya tienes 2 en curso en total')
+    expect(within(panel).getByRole('status')).toHaveTextContent(
+      'Ya tienes 2 en curso en total y tu límite es 2',
+    )
 
     await user.click(within(panel).getByRole('button', { name: 'Guardar cambios' }))
 
@@ -170,7 +174,7 @@ describe('BoardPage', () => {
   it('tracks steps and deletes a task after confirming', async () => {
     const { user, taskRepository } = setup([task('Calificar lab')])
 
-    await user.click(await screen.findByRole('button', { name: /Calificar lab/ }))
+    await user.click(await screen.findByRole('button', { name: /^(?!Mover ).*Calificar lab/ }))
     const panel = screen.getByRole('dialog', { name: 'Tarea' })
     await user.type(within(panel).getByLabelText('Nuevo paso'), 'Revisar rúbrica{Enter}')
     await user.click(await within(panel).findByRole('checkbox', { name: 'Revisar rúbrica' }))
