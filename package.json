@@ -19,7 +19,12 @@
     "test:watch": "vitest",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test && npm run build",
     "prepare": "simple-git-hooks",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy",
+    "db:start": "supabase db start",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db",
+    "db:lint": "supabase db lint --level warning --fail-on warning",
+    "db:types": "supabase gen types typescript --local --schema public > src/shared/lib/database.types.ts && prettier --write src/shared/lib/database.types.ts"
   },
   "dependencies": {
     "@fontsource-variable/schibsted-grotesk": "^5.3.0",
