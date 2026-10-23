@@ -1,0 +1,49 @@
+.themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+  gap: 10px;
+}
+
+.theme {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--dim);
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.theme:hover {
+  background: var(--lit);
+}
+
+.theme[aria-checked='true'] {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+.halves {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 4px 4px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.name small {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
