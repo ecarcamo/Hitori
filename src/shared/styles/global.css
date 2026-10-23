@@ -1,10 +1,12 @@
+@import '@fontsource-variable/schibsted-grotesk';
+@import './themes.css';
+
 :root {
-  --ground: #070709;
-  --ink: #f4ecea;
-  --muted: #b8a4a1;
-  --faint: #6f5856;
-  --accent: #f42c1d;
-  color-scheme: dark;
+  --font-sans: 'Schibsted Grotesk Variable', 'Helvetica Neue', Arial, sans-serif;
+  --radius-pill: 999px;
+  --radius-card: 12px;
+  --radius-panel: 20px;
+  --tap-min: 44px;
 }
 
 *,
@@ -13,10 +15,46 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  min-height: 100%;
+}
+
+body {
   background: var(--ground);
   color: var(--ink);
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

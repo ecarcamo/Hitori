@@ -1,0 +1,21 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 560px;
+  padding: 22px;
+  border-radius: var(--radius-panel);
+  background: var(--dim);
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.015em;
+}
+
+.body {
+  color: var(--muted);
+}

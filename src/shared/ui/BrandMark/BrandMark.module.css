@@ -1,0 +1,28 @@
+.mark {
+  display: inline-grid;
+  grid-template-columns: repeat(3, var(--cell));
+  grid-auto-rows: var(--cell);
+  gap: var(--gap);
+  flex: none;
+}
+
+.sm {
+  --cell: 6px;
+  --gap: 2px;
+}
+
+.lg {
+  --cell: 12px;
+  --gap: 4px;
+}
+
+.mark i {
+  border-radius: 1px;
+  background: var(--faint);
+  opacity: 0.6;
+}
+
+.mark i.lit {
+  background: var(--accent);
+  opacity: 1;
+}
