@@ -32,7 +32,11 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
       ref={dialogRef}
       className={styles.modal}
       aria-labelledby={titleId}
-      onClose={onClose}
+      onClose={(event) => {
+        if (!event.currentTarget.open) {
+          onClose()
+        }
+      }}
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           onClose()

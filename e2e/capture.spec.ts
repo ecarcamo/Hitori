@@ -16,6 +16,7 @@ test('one line creates a task with its lane, date and importance', async ({
   await expect(studies.getByText('ingsoft', { exact: true })).toBeVisible()
 
   await page.goto('/board')
+  await expect(page.getByRole('heading', { level: 1, name: 'Tablero' })).toBeVisible()
   if (testInfo.project.name === 'mobile') {
     await page
       .getByRole('navigation', { name: 'Vistas' })
