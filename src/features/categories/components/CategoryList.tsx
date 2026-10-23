@@ -14,7 +14,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import type { Category } from '../domain/category'
-import { sortOrderForMove } from '../domain/sortOrder'
+import { sortOrderForMove } from '@/shared/lib/sortOrder'
 import type { CategoryMutations } from '../hooks/categoryQueries'
 import styles from './CategoriesPage.module.css'
 import { CategoryCard } from './CategoryCard'

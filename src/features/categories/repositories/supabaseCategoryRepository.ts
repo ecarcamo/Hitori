@@ -3,7 +3,7 @@ import type { Database } from '@/shared/lib/database.types'
 import type { AppSupabaseClient } from '@/shared/lib/supabase'
 import { CATEGORY_TONES, type CategoryTone } from '@/shared/ui'
 import type { Category, CategoryChanges, Subcategory, SubcategoryChanges } from '../domain/category'
-import { bySortOrder } from '../domain/sortOrder'
+import { bySortOrder } from '@/shared/lib/sortOrder'
 import type { CategoryRepository } from './categoryRepository'
 
 type CategoryRow = Database['public']['Tables']['categories']['Row']
