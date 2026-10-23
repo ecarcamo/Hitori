@@ -1,5 +1,5 @@
 begin;
-select plan(4);
+select plan(5);
 
 insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data)
 values (
@@ -37,6 +37,11 @@ select throws_ok(
   '42501',
   null,
   'the profile id cannot be changed'
+);
+
+select lives_ok(
+  $$ update public.profiles set onboarded_at = now() where id = 'dddddddd-0000-4000-8000-000000000004' $$,
+  'the user can finish the onboarding'
 );
 
 select * from finish();

@@ -23,6 +23,7 @@ erDiagram
         smallint urgency_days "3 por defecto"
         text theme
         color_mode color_mode
+        timestamptz onboarded_at "fin de la bienvenida"
     }
     CATEGORIES {
         uuid id PK
