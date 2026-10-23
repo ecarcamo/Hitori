@@ -1,5 +1,6 @@
-import { Link, Outlet, useRouterState } from '@tanstack/react-router'
+import { getRouteApi, Link, Outlet, useRouterState } from '@tanstack/react-router'
 import * as m from 'motion/react-m'
+import { TaskPanelHost } from '@/features/tasks'
 import { Icon } from '@/shared/ui'
 import styles from './AppShell.module.css'
 import { Sidebar } from './Sidebar'
@@ -11,7 +12,10 @@ const PAGE_ENTRANCE = {
   transition: { type: 'spring', stiffness: 380, damping: 32 },
 } as const
 
+const shellRoute = getRouteApi('/authenticated/shell')
+
 export function AppShell() {
+  const { tasks, categories, profile } = shellRoute.useRouteContext()
   const pathname = useRouterState({ select: (state) => state.location.pathname })
 
   return (
@@ -29,6 +33,12 @@ export function AppShell() {
         </m.div>
       </main>
       <TabBar />
+      <TaskPanelHost
+        tasks={tasks}
+        categories={categories}
+        timezone={profile.timezone}
+        inProgressLimit={profile.maxInProgress}
+      />
     </div>
   )
 }
