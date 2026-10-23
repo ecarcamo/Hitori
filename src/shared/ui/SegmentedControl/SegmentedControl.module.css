@@ -26,3 +26,13 @@
   color: var(--ink);
   font-weight: 600;
 }
+
+.fullWidth {
+  display: flex;
+  width: 100%;
+}
+
+.fullWidth .option {
+  flex: 1;
+  padding: 0 8px;
+}

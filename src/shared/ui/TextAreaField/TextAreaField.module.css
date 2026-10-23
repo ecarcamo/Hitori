@@ -1,0 +1,7 @@
+.textarea {
+  height: auto;
+  min-height: 96px;
+  padding: 14px 16px;
+  line-height: 22px;
+  resize: vertical;
+}

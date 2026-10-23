@@ -6,14 +6,21 @@ import type { ProfileRepository } from './profileRepository'
 type ProfileRow = Database['public']['Tables']['profiles']['Row']
 type ProfileUpdate = Database['public']['Tables']['profiles']['Update']
 
-const PROFILE_COLUMNS = 'id, display_name, timezone, onboarded_at'
+const PROFILE_COLUMNS = 'id, display_name, timezone, onboarded_at, max_in_progress, urgency_days'
 
-function toProfile(row: Pick<ProfileRow, 'id' | 'display_name' | 'timezone' | 'onboarded_at'>) {
+function toProfile(
+  row: Pick<
+    ProfileRow,
+    'id' | 'display_name' | 'timezone' | 'onboarded_at' | 'max_in_progress' | 'urgency_days'
+  >,
+) {
   return {
     id: row.id,
     displayName: row.display_name,
     timezone: row.timezone,
     onboardedAt: row.onboarded_at,
+    maxInProgress: row.max_in_progress,
+    urgencyDays: row.urgency_days,
   } satisfies Profile
 }
 
