@@ -6,17 +6,19 @@ Web para la compu y PWA para el teléfono. Carriles por categoría, límite de t
 
 - Plan de construcción: [`docs/PLAN.md`](docs/PLAN.md)
 - Decisiones de arquitectura: [`docs/adr/`](docs/adr)
+- Base de datos: [`docs/database.md`](docs/database.md)
 
 ## Requisitos
 
 - Node 24 o superior (`.nvmrc`)
-- Docker, para correr Supabase en local (a partir de la Etapa 2)
+- Docker y la [CLI de Supabase](https://supabase.com/docs/guides/cli), para la base de datos local
 
 ## Empezar
 
 ```bash
 npm install
 cp .env.example .env.local
+npm run db:start
 npm run dev
 ```
 
@@ -31,6 +33,9 @@ npm run dev
 | `npm run format`    | Formatea con Prettier                         |
 | `npm run test`      | Pruebas con Vitest                            |
 | `npm run check`     | Todo lo anterior, igual que la CI             |
+| `npm run db:start`  | Levanta la base de datos local                |
+| `npm run db:test`   | Pruebas de la base de datos (pgTAP)           |
+| `npm run db:types`  | Regenera los tipos de la base de datos        |
 
 Al hacer commit, `lint-staged` corre ESLint y Prettier sobre los archivos cambiados.
 

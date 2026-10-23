@@ -42,7 +42,15 @@ const boundaryZones = [
 ]
 
 export default tseslint.config(
-  { ignores: ['dist', 'coverage', 'node_modules', 'supabase/functions'] },
+  {
+    ignores: [
+      'dist',
+      'coverage',
+      'node_modules',
+      'supabase/functions',
+      'src/shared/lib/database.types.ts',
+    ],
+  },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

@@ -25,3 +25,22 @@ jobs:
       - run: npm run format:check
       - run: npm run test
       - run: npm run build
+
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.120.0
+      - run: npm ci
+      - run: supabase db start
+      - run: npm run db:lint
+      - run: npm run db:test
+      - run: npm run db:types
+      - run: git diff --exit-code -- src/shared/lib/database.types.ts
